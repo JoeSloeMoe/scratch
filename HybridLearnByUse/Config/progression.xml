@@ -961,7 +961,8 @@
 		</perk>
 		<!-- end Electrocutioner Learn By Use (lbu)-->
 		
-				<!-- begin Robotics Learn By Use (lbu)-->
+		<!-- begin Robotics Learn By Use (lbu)
+			Note see also items.xml:gunBotT2JunkTurret append code for ranged turret logic-->
 		<perk name="lbu_Robotics" max_level="50" parent="lbu_IntellectSkills" base_skill_point_cost="0" name_key="lbu_RoboticsName" desc_key="lbu_RoboticsDesc" long_desc_key="lbu_RoboticsDesc" icon="ui_game_symbol_electric_turret">
 		
 			<!--BCK verify ProgressionLevel, backup var should always be equal to ProgessionLevel-->
@@ -989,7 +990,7 @@
 	
 			<!--apply any level xp gain for damage or kill triggers-->
 			<effect_group>
-				<requirement name="ItemHasTags" tags="perkTurrets"/>
+				<requirement name="ItemHasTags" tags="turretMelee"/>
 				<requirement name="ProgressionLevel" progression_name="lbu_Robotics" operation="LT" value="50"/>
 					<triggered_effect trigger="onSelfDamagedOther" action="ModifyCVar" cvar="lbu_Robotics_XP" operation="add" value="@lbu_Robotics_DMG_XP">
 						<requirement name="StatCompareCurrent" target="other" stat="health" operation="GT" value="0"/>
@@ -999,7 +1000,7 @@
 			
 			<!--Increase ProgressLevel if xp greater than value for next level-->
 			<effect_group>
-				<requirement name="ItemHasTags" tags="perkTurrets"/>
+				<requirement name="ItemHasTags" tags="turretMelee"/>
 				<requirement name="CVarCompare" cvar="lbu_Robotics_XP" operation="GTE" value="@lbu_Robotics_XPIncrement"/>
 				<requirement name="ProgressionLevel" progression_name="lbu_Robotics" operation="LT" value="50"/>
 					<triggered_effect trigger="onSelfDamagedOther" action="ModifyCVar" cvar="lbu_Robotics_XPIncrement" operation="multiply" value="@lbu_DefaultIncrementIncrease"> 

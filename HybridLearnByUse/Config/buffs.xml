@@ -359,14 +359,14 @@
 			
 			<!-- buffPerkLevelChanged keeps track of the players points in the various Perks that have a corresponding lbu_Perk.
 				 Used to give bonus lbu_Perl leveling xp on kills or 'destroys' in the case of miner69.
-				 The buff is repeatedly called in a loop every 30 ticks-->
+				 The buff is repeatedly called in a loop every 40 ticks, once a second-->
 			<!--buff only works onStack so fire it 2x -->
 			<triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="buffPerkLevelChanged"/>
 			<triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="buffPerkLevelChanged"/>
 			<!-- Check if Perk Level has changed. If it has, update the xp kill bonus for that Perk. 
 				 Only need to do this every few updates not every on so use a local variable to skip some cycles-->
 			<triggered_effect trigger="onSelfBuffUpdate" action="AddBuff" buff="buffPerkLevelChanged">
-				<requirement name="CVarCompare" cvar="$lbu_PerkLevelCounter" operation="GTE" value="30"/></triggered_effect>
+				<requirement name="CVarCompare" cvar="$lbu_PerkLevelCounter" operation="GTE" value="40"/></triggered_effect>
 			<!--increment local counter-->
 			<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_PerkLevelCounter" operation="add" value="1"/>	
 			<!--reset counter if needed-->
@@ -1262,10 +1262,10 @@
 		<!--this buff provides support for the buffDemolitionMolotovs buff below.
 			It acts as an interface between any zombies getting burned from molotovs and the 
 			calculation of how much demolition xp to generate and manage level roll over.
-			THis buff it applied to the player then the molotov breaks/impacts.
+			THis buff it applied to the player when the molotov breaks/impacts.
 			It will listen for a short period and count the number of Zombies that get caught on fire.
 			
-			Each Zombies or Animal set on fire by the molotov will update the molotovTokenKeyCount 
+			Each Zombie or Animal set on fire by the molotov will update the molotovBurnCount 
 			see items:comment[lbu_Demolition code for Molotovs]
 				buffs:buffDemolitionMolotovs, buffDemolitionMolotovsHitCounter 
 			See also progression:lbu_Demolition
@@ -1276,6 +1276,7 @@
 			<duration value="0"/>	
 			<effect_group>
 				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$molyCountdown" operation="set" value="3"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$molotovBurnCount" operation="set" value="0"/>
 				<triggered_effect trigger="onSelfBuffRemove" action="RemoveCVar" cvar="$molyCountdown"/>
 			</effect_group>
 			<effect_group>
@@ -1370,9 +1371,10 @@
 									  *Adjusted Days Alive = (AdjustedDaysAlive > PlayerLevel) ? PlayerLevel : AdjustedDaysAlive; 
 				Difficulty Factor = 1 * 1.2 == 1.2						
 				Difficulty = 1
+				(Gamestage_Modifier & Gamestage_Bonus values are from the games biomes.xml file)
 				Gamestage_Modifier = Pine Forest 0, Burnt Forest 0.5, Desert 0.5, Snow 1, Wasteland 1.5
 				Gamestage_Bonus = Pine Forest 0, Burnt Forest 12, Desert 12, Snow 24, Wasteland 36 
-								(these number are derived through testing, docs list them as 0,10,10,20,30 but the above modified numbers track the Gamestage perfectly)
+								(these number are derived through testing, docs list them as 0,10,10,20,30 but the above modified numbers track the Gamestage perfectly
 			
 			Final:
 				(( [Player Level] + [AdjustedDaysAlive] ) * 1.2 ) * ( 1 + [Gamestage_Modifier] )) + [Gamestage_Bonus]
@@ -1387,71 +1389,144 @@
 				THe calculation of which biome the player is currently in, is done in buffLuckyLooterXPMonitor when the XP is applied
 				as it can change much more frequently than player level or days alive.
 			-->
-			
+		<!--the buffGameStageMonitorSupport tracks player deaths for buffGameStageMonitor.
+			buffGameStageMonitor uses a modified update rate, updating 1/sec instead of 20/s
+			Monitoring the players death uses onSelfRespawn not onSelfBuffUpdate and deosnt use
+			adjusted update rates. So the players death is monitored in this support buff.
+			The vars used in this buff are global vars and intialised in buffGameStageMonitor below-->
+		<buff name="buffGameStageMonitorSupport" hidden="true" remove_on_death="false" >
+			<stack_type value="ignore"/>
+			<duration value="0"/>	
+			<!--Death tracking code-->
+			<effect_group>
+				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="stats_DaysAlive" operation="set" value="0"/>
+				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="stats_PlayerDeaths" operation="add" value="1"/>
+				<!--adjusted days alive precalculation-->
+				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="stats_DaysAlive_PreCalc" operation="set" value="@stats_PlayerDeaths"/>
+				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="stats_DaysAlive_PreCalc" operation="multiply" value="@daysAliveChangeWhenKilled"/>	
+			</effect_group>
+			<!--END Death tracking code-->
+		</buff>	
+		
 		<buff name="buffGameStageMonitor" hidden="true" remove_on_death="false" >
 			<stack_type value="ignore"/>
 			<duration value="0"/>			
-			<update_rate value=".1"/> <!--once every 10 ticks-->
+			<update_rate value=".05"/> <!--One a second update (at 20 ticks per second = 20*0.05 = 1 tick per second)-->
+			<!--<display_value value=".buffGameStageMonitor"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar=".buffGameStageMonitor" operation="set" value="@stats_GameStage"/>
+			</effect_group>-->
 			<!-- initialisation-->
 			<effect_group>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$lbu_DaysAlive" operation="set" value="0"/>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$lbu_DayFlag" operation="set" value="0"/>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$lbu_PlayerLevel" operation="set" value="0"/>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$lbu_PlayerDeaths" operation="set" value="0"/>
-				<!--the gamestage var used by Learn By Use-->
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="lbu_GameStage" operation="set" value="0"/>
-			
+				<!--load the support buff if its not already laoded-->
+				<triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="buffGameStageMonitorSupport">
+						<requirement name="!HasBuff" buff="buffGameStageMonitorSupport"/></triggered_effect>
+				<!--glabal variables initialisation-->
+				<!--player level (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_PlayerLevel" operation="set" value="0"/>
+				<!--the number of days a player has gone without death (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_DaysAlive" operation="set" value="0"/>
+				<!--number of player deaths (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_PlayerDeaths" operation="set" value="0"/>
+				<!--the current day e.g. the 17th day (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_CurrentDay" operation="set" value="1"/>
+				<!--the gamestage without biome effects (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_GameStage" operation="set" value="0"/>
+				<!--the gamestage with biome effects (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_BiomeGameStage" operation="set" value="0"/>
+				
+				<!--the amount the current biome is modifying the gamestage by (0, 0.5, 1, 1.5 etc.) (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_BiomeModifier" operation="set" value="0"/>
+				<!--the bonus the current biome is adding to the gamestage (0, 10, 20, 30 etc.) (immutable)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_BiomeBonus" operation="set" value="0"/>
+				
+				<!--END glabal variables initialisation-->
+				
+				<!--other temp vars-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$stats_DayFlag" operation="set" value="1"/> <!--similar to IsDay & IsNight but is 7am-10pm for the gamestage calc-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="set" value="0"/>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="stats_DaysAlive_PreCalc" operation="set" value="0"/>
+				
 			</effect_group>
 			
 			<!--Day tracking code-->
-			<!--check for day turnover-->
+			<!--check for day turnover, the game's gamestage 'day change' ticks over at 7am, 
+				I would have thought that it would be 6am but its 7am in testing-->
 			<effect_group>
-				<requirement name="TimeOfDay" operation="GT" value="0001"/>
-				<requirement name="TimeOfDay" operation="LT" value="0005"/>
-				<requirement name="$lbu_DayFlag" operation="LT" value="1"/>
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_DayFlag" operation="set" value="1"/>
+				<requirement name="TimeOfDay" operation="EQ" value="0700"/>
+				<requirement name="CVarCompare" cvar="$stats_DayFlag" operation="LT" value="1"/>
+					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_DayFlag" operation="set" value="1"/>
 					<!--increment number of days alive-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_DaysAlive" operation="add" value="1"/>
+					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_DaysAlive" operation="add" value="1"/>
+					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_CurrentDay" operation="add" value="1"/>
 			</effect_group>
-			<!--flip the day flag back after a few minutes-->
+			<!--flip the day flag back at the end of the day-->
 			<effect_group>
-				<requirement name="TimeOfDay" operation="GT" value="0010"/>
-				<requirement name="$lbu_DayFlag" operation="GTE" value="1"/>
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_DayFlag" operation="set" value="0"/>
+				<requirement name="TimeOfDay" operation="EQ" value="2200"/>
+				<requirement name="CVarCompare" cvar="$stats_DayFlag" operation="GTE" value="1"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_DayFlag" operation="set" value="0"/>
 			</effect_group>
 			<!--END Day tracking code-->
 			
-			<!--Death tracking code-->
-			<effect_group>
-				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="$lbu_DaysAlive" operation="set" value="0"/>
-				<triggered_effect trigger="onSelfRespawn" action="ModifyCVar" cvar="$lbu_PlayerDeaths" operation="add" value="1"/>
-			</effect_group>
-			<!--END Death tracking code-->
-			
 			<!--Player level tracking code-->
 			<effect_group>
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_PlayerLevel" operation="add" value="1">
-					<requirement name="PlayerLevel" operation="GT" value="@$lbu_PlayerLevel"/>
-				</triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_PlayerLevel" operation="add" value="1">
+					<requirement name="PlayerLevel" operation="GT" value="@stats_PlayerLevel"/></triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_PlayerLevel" operation="subtract" value="1">
+					<requirement name="PlayerLevel" operation="LT" value="@stats_PlayerLevel"/></triggered_effect>
 			</effect_group>
 			<!--END Player level tracking code-->
 			
 			<effect_group> 
-				<!--adjusted days alive-->
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$lbu_DaysAlive_PreCalc" operation="set" value="@$lbu_PlayerDeaths"/>
-				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$lbu_DaysAlive_PreCalc" operation="multiply" value="@daysAliveChangeWhenKilled"/>
 				
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_GameStageTemp" operation="set" value="@$lbu_DaysAlive"/>
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_GameStageTemp" operation="subtract" value="@$lbu_DaysAlive_PreCalc"/>
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_GameStageTemp" operation="set" value="@$lbu_PlayerLevel">
-					<requirement name="CVarCompare" cvar="$lbu_GameStageTemp" operation="GT" value="@lbu_PlayerLevel"/></triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="set" value="@stats_DaysAlive"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="subtract" value="@stats_DaysAlive_PreCalc"/>
+				<!--capped at players current level-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="set" value="@stats_PlayerLevel">
+					<requirement name="CVarCompare" cvar="$stats_GameStageTemp" operation="GT" value="@stats_PlayerLevel"/></triggered_effect>
 				<!--END adjusted days alive-->
 				
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_GameStageTemp" operation="add" value="@$lbu_PlayerLevel"/>
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_GameStageTemp" operation="multiply" value="1.2"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="add" value="@stats_PlayerLevel"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="multiply" value="1.2"/>
 				
 				<!--set the GameStage with the final calculation-->
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="lbu_GameStage" operation="set" value="@$lbu_GameStageTemp"/>
+				<!--this is the raw gamestage - the gamestage without Biome modifications-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_GameStage" operation="set" value="@$stats_GameStageTemp"/>
+			</effect_group>
+
+			<!--calculate gamestage with biome adjustments-->
+			<effect_group>
+				<!--Calculate Gamestage_Modifier and Gamestage_Bonus from the current biome-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeModifier" operation="set" value="0.5"/> <!--most common, desert and burn biome-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeBonus" operation="set" value="10"/><!--most common, desert and burn biome-->
+				<!--pine forest-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeModifier" operation="set" value="0">
+						<requirement name="InBiome" biome="3"/></triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeBonus" operation="set" value="0" >
+						<requirement name="InBiome" biome="3"/></triggered_effect>					
+				<!--snow-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeModifier" operation="set" value="1">
+						<requirement name="InBiome" biome="1"/></triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeBonus" operation="set" value="20" >
+						<requirement name="InBiome" biome="1"/></triggered_effect>						
+				<!--wasteland-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeModifier" operation="set" value="1.5">
+						<requirement name="InBiome" biome="8"/></triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeBonus" operation="set" value="30" >
+						<requirement name="InBiome" biome="8"/></triggered_effect>
+						
+				<!--calculate current gamestage modifier ( 1 + [Gamestage_Modifier] )-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="set" value="@stats_BiomeModifier"/> 
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="add" value="1"/>
+				<!--((( [Player Level] + [Adjusted Days Alive] ) * [Difficulty Factor] (1.2) ) * ( [Difficulty] + [Gamestage_Modifier] )) + [Gamestage_Bonus]-->
+				<!-- OR (Gamestage_Modifier * stats_GameStage) + stats_BiomeBonus -->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="multiply" value="@stats_GameStage"/>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$stats_GameStageTemp" operation="add" value="@stats_BiomeBonus"/>
+					
+				<!--set the Biomed GameStage with the final calculation-->
+				<!--this is the final gamestage - the gamestage with Biome modifications-->
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="stats_BiomeGameStage" operation="set" value="@$stats_GameStageTemp"/>
+				
 			</effect_group>
 
 			
@@ -1463,72 +1538,40 @@
 		<buff name="buffLuckyLooterXPMonitor" hidden="true" remove_on_death="false" >
 			<stack_type value="ignore"/>
 			<duration value="0"/>			
-			<update_rate value=".1"/> <!--once every 10 ticks-->
+			<update_rate value=".1"/> <!--2 times a sec (at 20 ticks per sec = 20*0.1 = 2 updates per second)-->
 			<effect_group>
 				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="set" value="@_xpFromLoot"/>
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_XPFomLoot_temp" operation="set" value="0"/>
 			</effect_group>
 
 			<!--update the xp based on the hit count-->
 			<effect_group>
 				<!--_xpFromLoot resets each player level so if it is less that the current lbu_XPFomLoot it has been reset, 
 					so set them equal again. -->
-				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_XPFomLoot" operation="set" value="@$game_XPFomLoot">
-					<requirement name="CVarCompare" cvar="$lbu_XPFomLoot" operation="GT" value="@$game_XPFomLoot"/></triggered_effect>
+				<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="lbu_XPFomLoot" operation="set" value="@$game_XPFomLoot">
+					<requirement name="CVarCompare" cvar="lbu_XPFomLoot" operation="GT" value="@$game_XPFomLoot"/></triggered_effect>
 			</effect_group>	
 			
 			<effect_group>	
-				<requirement name="CVarCompare" cvar="$lbu_XPFomLoot" operation="LT" value="@$game_XPFomLoot"/>
+				<requirement name="CVarCompare" cvar="lbu_XPFomLoot" operation="LT" value="@$game_XPFomLoot"/>
 					<!--there has been an increase in loot xp-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="subtract" value="@$lbu_XPFomLoot"/>
+					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="subtract" value="@lbu_XPFomLoot"/>
 					
 					<!--$game_XPFomLoot now has the increase of in-game loot xp since last update-->
 					<!--to convert to learn-by-use XP
-					    Get the lbu_GameStage
-						Calculate current GameStage based on Biome
-						Normalise the lbu_XPFomLoot_temp using the gamestage (divide the games _XPFromLoot by the current gamestage to get looting incident count)
+						Normalise the $game_XPFomLoot using stats_BiomeGameStage (divide the games _XPFromLoot by the current gamestage to get looting incident count)
 						(each in-game looting xp gain amount is the same as the current gamestage - its how the game scales looting xp)
-						Calculate lbu xp for looting-->
-						
-					<!--Calculate Gamestage_Modifier and Gamestage_Bonus from the current biome-->
-					<!--the formula adds a 1 (Diffculty) to each biome modifier - thats added here manually
-						( 1 + [Gamestage_Modifier] )-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_modifier" operation="set" value="1.5"/> <!--most common, desert and burn biome-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_Bonus" operation="set" value="12"/><!--most common, desert and burn biome-->
-					<!--pine forest-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_modifier" operation="set" value="1">
-							<requirement name="InBiome" biome="3"/></triggered_effect>
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_Bonus" operation="set" value="0" >
-							<requirement name="InBiome" biome="3"/></triggered_effect>					
-					<!--snow-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_modifier" operation="set" value="2">
-							<requirement name="InBiome" biome="1"/></triggered_effect>
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_Bonus" operation="set" value="24" >
-							<requirement name="InBiome" biome="1"/></triggered_effect>						
-					<!--wasteland-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_modifier" operation="set" value="2.5">
-							<requirement name="InBiome" biome="8"/></triggered_effect>
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_Bonus" operation="set" value="36" >
-							<requirement name="InBiome" biome="8"/></triggered_effect>
-					<!--calculate current gamestage-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_CurrentGameStage" operation="set" value="@$lbu_modifier"/>  <!--this is actually Modifier + Difficulty-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_CurrentGameStage" operation="multiply" value="@lbu_GameStage"/>
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_CurrentGameStage" operation="add" value="@$lbu_Bonus"/>
-					<!--((( [Player Level] + [Adjusted Days Alive] ) * [Difficulty Factor] (1.2) ) * ( [Difficulty] + [Gamestage_Modifier] )) + [Gamestage_Bonus]-->
-					<!-- OR (lbu_GameStage * Gamestage_Modifier) + Gamestage_Bonus 
-								(lbu_GameStage * lbu_modifier) + lbu_Bonus == precise current gamestage in game-->
-					<!--END calculate current gamestage-->
-					
+					-->		
 					<!--normalise-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="divide" value="@$lbu_CurrentGameStage"/>
+					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="divide" value="@stats_BiomeGameStage"/>
+					<!--minimum is 1-->
 					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="set" value="1">
 						<requirement name="CVarCompare" cvar="$game_XPFomLoot" operation="LT" value="1"/></triggered_effect>
 					
-					<!--lbu_XPFomLoot_temp now contains the number of times the player looted containers-->
+					<!--$game_XPFomLoot now contains the number of times the player looted containers-->
 					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$game_XPFomLoot" operation="multiply" value="@lbu_LuckyLooter_LOOT_XP"/>
 					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="lbu_LuckyLooter_XP" operation="add" value="@$game_XPFomLoot"/>
-					<!--set local loot xo and _xpFomLoot equal-->
-					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$lbu_XPFomLoot" operation="set" value="@_xpFromLoot"/>
+					<!--set local loot xp and _xpFomLoot equal-->
+					<triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="lbu_XPFomLoot" operation="set" value="@_xpFromLoot"/>
 					
 			</effect_group>	
 			<!--Increase ProgressLevel if xp greater than value for next level-->
@@ -1555,7 +1598,7 @@
 		
 	</append>
 	
-	<!--lBU Physician Perk supprt code-->
+	<!--lBU Physician Perk support code-->
 	<!--insert code to update the lbu_PhysicianUseCounter used by the buffLBUPhysician buff define above.
 	THis will increase the counter by 1 each time the game's buffHealFood is called (not when its stacked)-->
 	<append xpath="/buffs/buff[@name='buffHealFood']">
