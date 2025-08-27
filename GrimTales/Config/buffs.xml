@@ -1325,6 +1325,85 @@
 			</effect_group>
 		</buff>
 		<!--END Mary's revenge buffs-->
+		<!--test buff for potential error on linux-->
+		<buff name="buff_VerifyDefaultSettings" hidden="true" remove_on_death="false" >
+			<stack_type value="ignore"/>
+			<duration value="0"/>
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="marysRevengeFinalTrigger" operation="set" value="1"/>
+			</effect_group>
+				<!--Mary's Revenge-->
+			<effect_group>
+				<!--set the total kill streak required for Mary's revenge to trigger: default 3000-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="killStreakTarget" operation="set" value="3000"/>
+				
+				<!--When the player 'summons' Magrat, there is a delay before she actually spawns.-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="magratFirstSpawnCountdownDefault" operation="set" value="2,7"/> <!--default 2,7 seconds-->
+				<!--If the player doesnt kill Magrat, the final boss, Magrat can respawn magratSpawnCountMax number of times.
+					Default is to only spawn once, the player is given a pie with 6 slices so they can repeat the quest if they fail.
+					If Magrat is set to spawn more than once, she will respawn randomly at another time if the player dies or goes out of render distance.
+					When this is set to more than one spawn, eating another slice of pie wont do anything until magratSpawnCountMax is surpassed.
+					While Magrat is in spawn/respawn mode the player will see a Blue Skull Curse Buff in the UI see:buffMarysRevengeFinalBossSummon-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="magratSpawnCountMax" operation="set" value="1"/> <!--default 1 (only once)-->
+				<!--the time between Magrat re-Spawns varies between the spawns and set in buffs:buffMarysRevengeFinalBossSummon-->
+				
+				
+				<!--While Magrat is alive, Minions have a random chance to spawn other Minions (dopplegangers) when damaged.
+					See entityclasses.xml:marysRevengeFinalBossMinion and comment at entityclasses.xml:MINIONSPAWNS 
+					for details.-->
+				<!--This is the minimum number of seconds between Magrat's Minion spawns so the player doesnt get flooded-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="magratMinionSpawnCountdownDefault" operation="set" value="10"/> <!--default 10 seconds-->
+				<!--To set the the % Chance a Minion will spawn another Minion when damaged
+					see entityclasses.xml:marysRevengeFinalBossMinion, look for the 'random' function-->
+					
+			</effect_group>
+			<!--End Mary's Revenge-->
+			
+			<!-- pigeons carry diseases variable initialisation-->
+			<!-- Initialise the spawn variables for the pigeons carry diseases storyline-->
+			<effect_group>
+				<!--begin the story somewhere between the player's 22nd - 32nd level-->
+				<!--each pigeon is released a random number (between 5 and 13 ) of player levels after the previous pigeon was released-->
+				<!--first pigeon will spawn between level 20 and 30-->
+				<!--grimtalestest-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="firstPigeonLevel" operation="set" value="randomint(22,32)"/> <!--default level randomint(22,32)-->
+				<!--Second pigeon will spawn between 5 and 13 levels after the first pigeon etc. 
+					The longest number of levels for the last pigeon to spawn is level 71, and shortest number of levels is 37. Avg: 54
+					The Interloper story start with the thrid pigeon kill. Largest level for player getting the interloper story is 58, shortest is 32. Avg: 45
+					Modify the 5 to change the shortest number of levels
+					Modify the 13 to change the longest number of levels
+					The min gap of 5 levels between spawns allows time for the previous pigeon's message to be resent if it fails to be delivered-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="secondPigeonLevel" operation="set" value="@firstPigeonLevel"/>  
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="secondPigeonLevel" operation="add" value="randomint(5,13)"/>  <!--default level randomint(5,13)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="thirdPigeonLevel" operation="set" value="@secondPigeonLevel"/>   
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="thirdPigeonLevel" operation="add" value="randomint(5,13)"/>   <!--default level randomint(5,13)-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="fourthPigeonLevel" operation="set" value="@thirdPigeonLevel"/>   
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="fourthPigeonLevel" operation="add" value="randomint(5,13)"/>  <!--default level randomint(5,13)-->
+				
+				<!--The time in seconds between when a pigeon spawns and the pigeon's delivery is considered 'not received' - resend (respawn) the same pigeon after this number of seconds-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="pigeonSpawnCountdown" operation="set" value="2700"/> <!--default: 2700 (45min or 18hrs of a default in game day)-->
+				<!--number of times to spawn a specific pigeon to deliver a note, after these attempts it will no longer try deliver the note.
+					This includes the final pigeon boss - will respawn at pigeonSpawnCountdown intervals above until either killed or this number of spawns-->
+				<triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="pigeonSpawnAttempts" operation="set" value="5"/> <!-- default: 5-->
+			</effect_group>
+			<!-- END pigeons carry diseases variable initialisation-->
+			
+			<!--END PLAYER CONFIG VARIABLES-->
+			
+			<!--add pigeons carry diseases buff.
+				buffPigeonsCarryDiseasesStory will only be added once, doesnt get deleted on death
+				Only add if the story is not already complete-->
+			<effect_group>
+				<requirement name="CVarCompare" cvar="fourthPigeonDeliveryComplete" operation="LT" value="1"/>
+				<requirement name="!HasBuff" buff="buffPigeonsCarryDiseasesStory"/>
+					<triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="buffPigeonsCarryDiseasesStory"/>
+			</effect_group>
+			
+			<effect_group>
+				<triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="buff_VerifyDefaultSettings" />
+			</effect_group>
+		</buff>
+		<!--END test buff for potential error on linux-->
 		
 		<!-- this buff is given to the player when they start a game - see buff ADDCONTROLLERBUFF below -->
 		<!-- Keeps track of various game counters e.g. number of zombie kills.
@@ -1336,6 +1415,13 @@
 			<!-- this buff is a background buff and isnt shown on the hud so no display value format 
 				(its not completely hidden though and can be seen in the players 'current buffs' window-->
 			<!--<display_value_format value="time"/>-->
+
+			<!--certify default settings. if missing add, this is for a potential bug on linux-->
+			<effect_group>
+				<requirement name="CVarCompare" cvar="killStreakTarget" operation="LT" value="1"/>
+				<requirement name="!HasBuff" buff="buff_VerifyDefaultSettings"/>
+					<triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="buff_VerifyDefaultSettings"/>
+			</effect_group>
 			<effect_group>
 				<!--update number of zombie kills when onSelfKilledOther event received-->
 				<triggered_effect trigger="onSelfKilledOther" action="ModifyCVar" cvar="$numZombieKillsControl" operation="add" value="1" >
@@ -1361,6 +1447,7 @@
 
 			<effect_group>			
 				<!-- check zombie death count - give reward if passed-->
+				<requirement name="CVarCompare" cvar="killStreakTarget" operation="GTE" value="1"/>
 				<requirement name="CVarCompare" cvar="$numZombieKillsControl" operation="GTE" value="@killStreakTarget"/>
 				<requirement name="CVarCompare" cvar="burialSiteOneGiven" operation="LTE" value="0"/>
 				<!--only give quest when player idle-->
@@ -1485,4 +1572,5 @@
 		
 	</append>
 	<!--END START GRIM TALES CODE-->
+
 </configs>
