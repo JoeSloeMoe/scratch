@@ -1,0 +1,17 @@
+<configs>
+	
+	<!--The player belongs to the Harrington Clan from out East
+		and is in the area to set the stage for a takeover of the Duke's territory.
+		Baseline for character context.  
+		Prep work for the intro of Bandits maybe before I die of old age-->
+	<insertAfter xpath="/npc/factions/faction[@name='trader']">
+		<faction name="harringtons">
+			<relationship name="*" value="neutral"/>
+			<relationship name="whiteriver" value="neutral"/>
+			<relationship name="duke" value="dislike"/>
+			<relationship name="undead" value="hate"/>
+			<relationship name="trader" value="neutral"/>
+		</faction>
+	</insertAfter>
+	
+</configs>

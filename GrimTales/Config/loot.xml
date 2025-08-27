@@ -1,0 +1,303 @@
+<config>
+		
+
+
+	<!--begin airdrop loot settings-->
+	<insertBefore xpath="/lootcontainers/lootgroup[@name='empty']">
+		<lootqualitytemplates>
+			<!--Quality template for the solar panels - used in airdrop & police car loot-->
+			<lootqualitytemplate name="solarPanelTemplate">
+				<qualitytemplate level="0,999999" default_quality="3">
+					<loot quality="2" prob="0.2"/>
+					<loot quality="3" prob="0.2"/>
+					<loot quality="4" prob="0.2"/>
+					<loot quality="5" prob="0.2"/>
+					<loot quality="6" prob="0.2"/>
+				</qualitytemplate>
+			</lootqualitytemplate>
+			
+			<!--Quality template dropping level 6 items. Used for the solar panel challenge reward and
+				RocketLauncher loot drop in the Interloper:InterceptSupplyDrop story chapter final loot-->
+			<lootqualitytemplate name="SNT_level6QualityTemplate">
+				<qualitytemplate level="0,999999" default_quality="6">
+					<loot quality="6" prob="1"/>
+				</qualitytemplate>
+			</lootqualitytemplate>
+		</lootqualitytemplates>
+	</insertBefore>
+
+	<!-- Pigeon carry diseases: loot containers, groups and items for the homing vulture/pigeon.
+		See entityClasses EntityLootContainerHomingPigeon1 comments for description of use of these containers  
+		-->
+	<append xpath="/lootcontainers">
+		<!--lootgroup for the first delivery-->
+		<lootgroup name="groupHomingPigeonDelivery1" count="all">
+			<item name="homingPigeonContainer1" count="1" />
+			<item name="resourcePigeonBand1" count="1" />
+		</lootgroup>
+		<!--Second delivery lootgroup -->
+		<lootgroup name="groupHomingPigeonDelivery2" count="all">
+			<item name="homingPigeonContainer2" count="1" />
+			<item name="resourcePigeonBand2" count="1" />
+		</lootgroup>
+		<!--Third delivery lootgroup -->
+		<lootgroup name="groupHomingPigeonDelivery3" count="all">
+			<item name="resourcePigeonTracker" count="1" />
+			<item name="homingPigeonContainer3" count="1" />
+			<item name="resourcePigeonBand3" count="1" />
+		</lootgroup>
+		<!--Fourth delivery lootgroup -->
+		<lootgroup name="groupHomingPigeonDelivery4" count="all">
+			<item name="homingPigeonContainer4" count="1" />
+			<item name="resourcePigeonBand4" count="1" />
+		</lootgroup>
+		<!--lootcontainer for the first delivery (each delivery can have a different note)-->
+		<lootcontainer name="homingPigeonDelivery1" count="2" size="2,1" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupHomingPigeonDelivery1"/>
+		</lootcontainer>
+		<!--lootcontainer for the second delivery -->
+		<lootcontainer name="homingPigeonDelivery2" count="2" size="2,1" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupHomingPigeonDelivery2"/>
+		</lootcontainer>
+		<!--lootcontainer for the third delivery -->
+		<lootcontainer name="homingPigeonDelivery3" count="3" size="3,1" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupHomingPigeonDelivery3"/>
+		</lootcontainer>
+		<!--lootcontainer for the fourth delivery -->
+		<lootcontainer name="homingPigeonDelivery4" count="2" size="2,1" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupHomingPigeonDelivery4"/>
+		</lootcontainer>
+		
+		
+		<!--lootgroup for the final pigeon boss entityclasses.xml:pigeonFinalBoss -->
+		<lootgroup name="groupPigeonFinalBossLoot" count="all"> 
+			<item name="pigeonFinalBossBundle" count="1" />
+		</lootgroup>
+		<!--lootcontainer for the final pigeon boss entityclasses.xml:pigeonFinalBoss -->
+		<lootcontainer name="pigeonFinalBossLoot" count="1" size="6,3" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupPigeonFinalBossLoot"/>
+		</lootcontainer>
+	</append>
+	<!-- end Pigeon carry diseases-->
+	
+		
+	<!--begin police car loot settings-->
+	<!--add the specialist recipe ingredients for the CrowdControl mod to PoliceCar loot drops
+		(Missing PatrolCar)-->
+	<insertBefore xpath="/lootcontainers/lootgroup[@name='groupPoliceCar01']">
+		<!--solar panel group for police car drops -->
+		<lootgroup name="lootgroupPoliceCarSolarPanel" loot_quality_template="solarPanelTemplate"> 
+			<item name="solarCell" count="1"/>
+		</lootgroup>
+		<lootgroup name="lootGroupElectricRagdollRecipe" >
+			<item name="chargedNiCdBattery" count="1" />
+			<item name="advancedClothingMesh" count="1" />
+			<item name="hafniumHydrideMagnet" count="1" />
+		</lootgroup>
+		<!--generic parts for the CrowdControl mod-->
+		<lootgroup name="lootGroupElectricRagdollGenericParts">
+			<item name="modGunMeleeRadRemover" count="1" />
+			<item name="modMeleeStunBatonRepulsor" count="1" />
+		</lootgroup>
+		<!--lootgroup for the specialist parts to the CrowdControl mod recipe-->
+		<lootgroup name="lootGroupElectricRagdoll">
+			<item group="lootGroupElectricRagdollRecipe" count="1" />
+		</lootgroup>
+		<!--lootgroup for the generic parts to the CrowdControl mod recipe-->
+		<lootgroup name="lootGroupElectricRagdollGeneric">
+			<item group="lootGroupElectricRagdollGenericParts" count="1" />
+		</lootgroup>
+		<!--lootgroup for the CrowdControl recipe schematic-->
+		<lootgroup name="lootGroupElectricRagdollSchematic">
+			<item name="qt_burialPatrolCarNote" count="1" />
+		</lootgroup>
+	</insertBefore>
+	
+	<!-- Add a lootcontainer and lootgroup for parts for the 
+			Crowd Control recipe and add to the forced open police cars-->
+	<insertAfter xpath="/lootcontainers/lootgroup[@name='groupPoliceCarBonus04']">
+		<lootgroup name="groupPoliceCarForcedBonus" count="all">
+			<!--chance to get one of the ingredients or schematic for the Electric Ragdoll armour mod -->
+			<!--this is the specialist parts for the mod: battery,cloth & magnet-->
+			<item group="lootGroupElectricRagdoll" prob="0.22" force_prob="true"/>  <!--.22-->
+			<!--this is the generic parts for the mod: rad remover,stun repulsor-->
+			<item group="lootGroupElectricRagdollGeneric" prob="0.08" force_prob="true"/> <!--.08-->
+			<!--the schemtiac for the mod for the recipe-->
+			<item group="lootGroupElectricRagdollSchematic" prob="0.08" force_prob="true"/> <!--.08-->
+			
+			<!--chance for a couple solar panels-->
+			<item group="lootgroupPoliceCarSolarPanel" prob="0.08" force_prob="true"/> <!--.08-->
+			
+			<!--everything else is same as default groupPoliceCarBonus lootgroup, no change -->
+			<item group="groupPoliceCarBonus01" count="2"/>
+			<item group="groupPoliceCarBonus02" count="1"/>
+			<item group="groupPoliceCarBonus03" loot_prob_template="medHigh" force_prob="true"/>
+			<item group="groupPoliceCarBonus04" loot_prob_template="med" force_prob="true"/>
+			<item group="groupPoliceCar04" loot_prob_template="low" force_prob="true"/>
+		</lootgroup>
+	</insertAfter>
+	<!--add a lootcontainer for the above loot group. 
+		Gets added to forced open police cars in blocks.xml-->
+	<insertAfter xpath="/lootcontainers/lootcontainer[@name='policeCarsBonus']">
+		<lootcontainer name="policeCarsForcedBonus" count="1" size="7,4" sound_open="UseActions/open_vehicle" sound_close="UseActions/close_vehicle" open_time="4" loot_quality_template="qualBaseTemplate">
+			<item group="groupPoliceCarForcedBonus"/>
+		</lootcontainer>
+	</insertAfter>
+	<!--end add the ingredients for the ElectricRagdoll armour mod to PoliceCar loot drops-->
+	
+	
+	<!--loot group and container for the buried Patrol Car treasure quest  -->
+	<insertAfter xpath="/lootcontainers/lootgroup[@name='groupPoliceCarBonus04']">
+		<lootgroup name="groupBuriedPatrolCarLoot" count="all">
+			<item name="resourceGoreBlockHumanCorpse1" count="1"/>
+			<item name="resourceGoreBlockHumanCorpse2" count="1"/>
+			<item name="resourceLuggage" count="1"/>
+			<item name="resourceHubcap" count="1"/>
+			<item name="modCrowdControlSchematic" count="1"/>
+			<item name="resourceConeConstruction" count="1"/>
+			<item name="resourceYoDawg" count="1"/>
+			<!--<item name="resourceCobweb" count="1"/>-->
+		</lootgroup>
+		<lootcontainer name="buriedPatrolCarLootContainer" count="1" size="7,4" sound_open="UseActions/open_vehicle" sound_close="UseActions/close_vehicle" open_time="4" loot_quality_template="qualBaseTemplate">
+			<item group="groupBuriedPatrolCarLoot"/>
+		</lootcontainer>
+	</insertAfter>	
+	<!--end loot group and container for the buried Patrol Car treasure quest-->
+	<!--end police car loot settings-->
+	
+	
+	<append xpath="/lootcontainers">
+		<!--loot containers for Burial Site Coffins - Mary's Revenge, Mary's Grave-->
+		<lootgroup name="groupBurialSiteCoffins" count="all">
+			<item name="resourceLetterV" count="1"/>
+			<item name="resourceLetterE" count="1"/>
+			<item name="resourceLetterN" count="1"/>
+			<item name="resourceLetterG" count="1"/>
+			<item name="resourceLetterE" count="1"/>
+			<item name="resourceLetterA" count="1"/>
+			<item name="resourceLetterN" count="1"/>
+			<item name="resourceLetterC" count="1"/>
+			<item name="resourceLetterE" count="1"/>
+			
+			<item name="resourcegGraveStone" count="1"/>
+			<item name="resourceMarysRemains" count="1"/>
+			<item name="coffinClockBroken" count="1"/>
+			<item name="coffinWoodSpikes" count="1"/>
+			<item name="cntBarrelGasOld" count="1"/>
+			
+			<!--<item name="playerExplosiveBarrel" count="8"/>
+			<item name="playerExplosiveBarrelSchematic" count="1"/>-->
+			<item name="marysRevengeArtifactContainer" count="1"/>
+		</lootgroup>
+		<lootcontainer name="burialSiteCoffins" count="1" size="9,2" sound_open="UseActions/coffin_wood_open" sound_close="UseActions/coffin_wood_close" loot_quality_template="qualBaseTemplate" destroy_on_close="empty">
+			<item group="groupBurialSiteCoffins"/>
+		</lootcontainer>
+		<!--END loot containers for Burial Site Coffins - Mary's Revenge, Mary's Grave-->
+		
+		<!--loot containers for Burial Site Coffins - Mary's Revenge, Ipslore The Red's grave-->
+		<lootgroup name="groupIpsloreTheRedCoffin" count="all">		
+			<item name="resourcegGraveStone" count="1"/>
+			<item name="resourceIpsloresRemains" count="1"/>
+			<item name="resourceDiscWorldBook" count="1"/>
+			<item name="modMagratTracker" count="1"/>
+			<item name="resourceIpsloresBoots" count="1"/>			
+		</lootgroup>
+		<lootcontainer name="ipsloreTheRedCoffin" count="1" size="9,2" sound_open="UseActions/coffin_wood_open" sound_close="UseActions/coffin_wood_close" loot_quality_template="qualBaseTemplate" destroy_on_close="empty">
+			<item group="groupIpsloreTheRedCoffin"/>
+		</lootcontainer>
+		<!--END loot containers for Burial Site Coffins - Mary's Revenge, Ipslore The Red's grave-->
+		
+		<!--lootgroup for the Coven House map loot drop entityclasses:marysRevengeCovenHouseLootScreamer-->
+		<lootgroup name="groupMarysRevengeCovenHouseLoot" count="all"> 
+			<item name="marysRevengeCovenHouseBundle" count="1" />
+		</lootgroup>
+		<!--lootcontainer for the Coven House map Loot drop entityclasses:marysRevengeCovenHouseLootScreamer-->
+		<lootcontainer name="marysRevengeCovenHouseLoot" count="1" size="6,3" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupMarysRevengeCovenHouseLoot"/>
+		</lootcontainer>
+		<!--lootgroup for Magrat's sacrificial knife, its own lootgroup to enforce level 6 quality spawn-->
+		<lootgroup name="groupMarysRevengeMagratsKnife" count="all" loot_quality_template="SNT_level6QualityTemplate"> 
+			<item name="marysRevengeMagratsSacrificialKnife" mods="modDyeOrange,fire" mod_chance="1" count="1" /> 
+		</lootgroup> 
+		
+		<!--lootgroup for the final Marys Revenge  boss entityclasses.xml:marysRevengeFinalBoss -->
+		<lootgroup name="groupMarysRevengeFinalBossLoot" count="all"> 
+			<item name="marysRevengeFinalBossBundle" count="1" />
+			<item group="groupMarysRevengeMagratsKnife" count="1" />
+			<item name="resourcePieceOfCheese" count="1" />
+		</lootgroup>
+		<!--lootcontainer for the final Marys Revenge boss entityclasses.xml:marysRevengeFinalBoss -->
+		<lootcontainer name="marysRevengeFinalBossLoot" count="1" size="6,3" sound_open="UseActions/open_backpack" sound_close="UseActions/close_backpack" open_time="1">
+			<item group="groupMarysRevengeFinalBossLoot"/>
+		</lootcontainer>
+		
+		<!--loot containers for Burial Site Coffins - Mary's Revenge, Magrat's sister's grave (Judy)-->
+		<lootgroup name="groupBurialSiteMagratsSister" count="all">
+			<item name="resourceJudysCorpse" count="1"/>
+			<item name="resourceWitchesHair" count="1"/>
+			<item name="resourceCultBoneJudy" count="1"/>
+			<item name="resourceDeadBird" count="1"/>
+		</lootgroup>
+		<lootcontainer name="burialSiteMagratsSister" count="1" size="4,2" sound_open="UseActions/casket_metal_open" sound_close="UseActions/casket_metal_close" loot_quality_template="qualBaseTemplate" destroy_on_close="empty">
+			<item group="groupBurialSiteMagratsSister"/>
+		</lootcontainer>
+		<!--END loot containers for Burial Site Coffins - Mary's Revenge, Mary's Grave-->
+		
+	</append>
+	<!--end loot container for Burial Site Coffins -->
+	
+	<!--found gyro story - story not developed yet, but initial gyro find is in the world-->	
+	<!--loot container for the gyrocopter-->
+	<append xpath="/lootcontainers">
+		<lootgroup name="groupFoundGyroWeapon" loot_quality_template="SNT_level6QualityTemplate"> 
+			<item name="assassinsPistol"/>
+		</lootgroup>
+		<lootgroup name="groupFoundGyro" count="all">
+			<item name="resourcePilotsCorpse" count="1"/>
+			<item name="resourceCIADudeCorpse" count="1"/>
+			<item name="foundGyroAgentLuggage" count="1"/>
+			<item name="resourceCIABriefingNote" count="1"/>
+			<item name="resourceCIASecurityTag" count="1"/>
+			<item name="foundGyroRewardSchematic" count="1"/>
+			<item group="groupFoundGyroWeapon" count="1" /> 
+		</lootgroup>
+		<lootcontainer name="lootGyroWreck" count="1" size="7,2" sound_open="UseActions/open_fridge" sound_close="UseActions/close_fridge" loot_quality_template="qualPlus1Template" ignore_loot_abundance="true">
+			<item group="groupFoundGyro"/> 
+		</lootcontainer>
+	</append>
+	<!-- END found gyro story -->
+	
+	<!-- interloper story loot -->
+	
+	<append xpath="/lootcontainers">
+
+		<!--drop a level 6 rocket launcher-->
+		<lootgroup name="groupSecretDropWeapon" count="all" loot_quality_template="SNT_level6QualityTemplate" > 
+			<item name="gunExplosivesT3RocketLauncher" count="1" /> 
+		</lootgroup>
+
+		<lootgroup name="groupSecretDrop" count="all">
+			<item name="interloperSupplyCrateDukesBundle" count="1"/>
+			<item name="interloperSupplyCrateAmmoBundle" count="1"/>
+			<item name="modMilitaryStructuralBrace" count="1"/>
+			<item group="groupSecretDropWeapon" count="1"/>
+		</lootgroup>
+		
+		<lootcontainer name="interloperSecretDrop" count="1" size="8,4" destroy_on_close="true" sound_open="SupplyDrops/open_supply_crate" sound_close="SupplyDrops/close_supply_crate" loot_quality_template="qualBaseTemplate" ignore_loot_abundance="true">
+			<item group="groupSecretDrop"/>
+		</lootcontainer>
+		
+		<!--loot for the book-for-magazine trade drop dropped during the interloper:quest_Interloper_Epilogue chapter-->
+		<lootgroup name="groupTradeDrop" count="all">
+			<item name="interloperEpilogueRewardBundle" count="1"/>
+		</lootgroup>
+		
+		<lootcontainer name="interloperTradeDrop" count="1" size="8,4" destroy_on_close="true" sound_open="SupplyDrops/open_supply_crate" sound_close="SupplyDrops/close_supply_crate" loot_quality_template="qualBaseTemplate" ignore_loot_abundance="true">
+			<item group="groupTradeDrop"/>
+		</lootcontainer>
+		
+	</append>
+	<!-- end interloper story loot-->
+	
+	
+</config>

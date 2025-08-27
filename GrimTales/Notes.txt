@@ -1,0 +1,56 @@
+Grim Tales 7DTD XML mod. (JoeSLoeMoe)
+Forum:
+
+A small collection of short stories that give a glimpse into the lives/deaths of other survivors.
+	1) Missing Patrol Car - break into a number of Cop Cars without lockpicking to engage. 
+	2) Mary's Revenge - triggered at a 3000 Kill Streak (configurable). Kill Streak resets on death.
+	3) Pigeons Carry Diseases - pigeons: some people hate them and some people absolutely adore them.
+	4) Interloper - keeping your eyes and ears open can lead to interesting things.
+	
+Notes:
+- The stories introduce unique items mid-late game.
+- These are not Trader quests or missions. They occur as you play the game. 
+- This is an XML mod and some of the storytelling is bounded by the capabilities of the XML.
+- The mod has not been tested in a multiplayer environment. Feedback on this is welcome.
+
+License:
+The code is free to use and commented with that in mind. A thank you would be nice if you reuse the code/patterns. 
+
+Version Info:
+1.0.1 - 7th Sept 2024
+ - Initial release
+
+1.0.2 - 5th Oct 2024
+ - Added sound effect and tweaked timing for final Interloper interaction to improve immersion.
+ - Several minor localisation changes to improve context.
+ - Added conditional to Pigeons Carry Diseases code so prevent timing issues for an uncommon use case. 
+ 
+1.1.0 - 3rd Jan 2025
+ - Mary's Revenge is now a full story with an optional side quest and an end boss.
+ 
+1.1.1 - 15th Feb 2025
+ - Code fix for MP IsBloodMoon error.
+ - Minor ammo loot balance.
+ - Code cleanup for Pigeons Carry Diseases boss encounter.
+ - Corrected Magrat's sister's name spelling.
+ 
+ 2.0.1 - 18th June 2025
+ - 7DTD 2.0 compatibility release.
+ - A number of small context modifications.
+ 
+ 2.0.2 - 1st Aug 2025
+  - Added localisation for bespoke entities.
+  - Ammended summoning pie code for chemistry station.
+  - Added _Other/Items/Food/parcelGenericPrefab.prefab_ to food items.
+  - Removed tier notification for bespoke quests.
+  - Tweaked Magrat's sacrificial knife to cater for charged and infernals.
+  - Tweaked assassins pistol to cater for charged and infernals.
+  - Couple other minor adjustments.  
+  
+ 2.0.3 - ongoing
+  - Pigeons can now be harvested
+  - Fixed Crowd Control mod to only respond to melee attacks
+  - Fixed All IS WELL so that the light works properly
+  - Magrat can only be summoned once
+
+  - Adjusted Interloper, Intercept the Supply Crate chapter ammo loot to match 2.x ammo changes

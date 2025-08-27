@@ -1,0 +1,72 @@
+ <configs>
+ 
+	<append xpath="/entitygroups">
+		
+		<!--Marys Revenge story code-->
+		<entitygroup name="MarysRevengeCovenHouseSpawnGroup">
+			marysRevengeCovenHouseScreamer
+		</entitygroup>
+		<entitygroup name="MarysRevengeCovenHouseLootSpawnGroup">
+			marysRevengeCovenHouseLootScreamer
+		</entitygroup>
+		<entitygroup name="MarysRevengeScreamerSpawnGroup">
+			marysRevengeGraveScreamer
+		</entitygroup>
+		<entitygroup name="MagratSpawnGroup">
+			marysRevengeFinalBoss
+		</entitygroup>
+		<entitygroup name="MagratMinionSpawnGroup">
+			marysRevengeFinalBossMinion
+		</entitygroup>
+		<entitygroup name="GraveKeeperDireWolfGroup">
+			graveKeeperDireWolf
+		</entitygroup>
+		<entitygroup name="GraveKeeperDireBearGroup">
+			graveKeeperDireBear
+		</entitygroup>
+		
+		<entitygroup name="RadiatedScreamerSpawnGroup">
+			zombieScreamerRadiated
+		</entitygroup>
+		<entitygroup name="FeralScreamerSpawnGroup">
+			zombieScreamerFeral
+		</entitygroup>
+		<entitygroup name="ScreamerSpawnGroup">
+			zombieScreamer
+		</entitygroup>
+		<!--end Marys Revenge story code-->
+		
+		<!--code for Interloper story -->
+		<!--spawn a special supply crate see quests:quest_Interloper_InterceptTheSupplies-->
+		<entitygroup name="InterloperDrop">
+			interloperSecretDrop
+		</entitygroup> 
+		<!--spawn a reward/trade supply crate see quests:quest_InterloperEpilogueSpawn-->
+		<entitygroup name="InterloperEpilogue">
+			interloperTradeDrop
+		</entitygroup> 
+		
+		<!--end interloper story code-->
+		
+		<!--PigeonsCarryDiseases story spawn code-->
+		<entitygroup name="PigeonOneSpawnGroup">
+			animalHomingPigeonOne
+		</entitygroup>
+		<entitygroup name="PigeonTwoSpawnGroup">
+			animalHomingPigeonTwo
+		</entitygroup>
+		<entitygroup name="PigeonThreeSpawnGroup">
+			animalHomingPigeonThree
+		</entitygroup>
+		<entitygroup name="PigeonFourSpawnGroup">
+			animalHomingPigeonFour
+		</entitygroup>
+		<entitygroup name="PigeonFinalBossSpawnerGroup">
+			pigeonFinalBoss
+		</entitygroup>
+		<entitygroup name="PigeonFinalFlockSpawnerGroup">
+			animalPigeonFlock
+		</entitygroup>
+		<!--end PigeonsCarryDiseases spawn code-->
+	</append>
+ </configs>

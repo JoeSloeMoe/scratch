@@ -1,0 +1,2153 @@
+<configs>
+	
+	<!-- tags for story items - see also blocks.xml for other tag additions -->
+
+	<!--the expanded drum mag dropped in the pigeons have diseases story - the mod can only be placed on the M60 so need to a specifc tag 'expandedDrumMag' to the M60 for it-->
+	<set xpath ="/items/item[@name='gunMGT3M60']/property[@name='Tags']/@value">,expandedDrumMag</set> 
+	<!--end tags for story items-->
+
+	<!--solar panels can be repaired as they dont always come out at full health in loot-->
+	<append xpath="/items/item[@name='solarCell']">
+		<property name="RepairTools" value="resourceRepairKit"/>
+	</append>
+			
+	<!-- adding several kinds of drinks -->
+	<append xpath="/items">
+		<!-- Elixir focuses on heath and stamina type stuff - see buffs.xml --> 
+		<item name="drinkJarGrandpasWheelchairRacingElixir">
+			<property name="Tags" value="drinks"/>
+			<property name="HoldType" value="3"/>
+			<property name="Meshfile" value="@:Other/Items/Food/bottled_waterPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mglass"/>
+			<property name="DescriptionKey" value="drinkJarGrandpasWheelchairRacingElixirDesc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="DisplayType" value="waterGrandpasWheelchairRacingElixir"/>
+			<property name="CustomIcon" value="drinkJarGrandpasLearningElixir"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="CraftingIngredientTime" value="15"/>
+			<property name="EconomicValue" value="500"/>
+			<property name="Group" value="Food/Cooking,CFDrink/Cooking"/>
+			<property class="Action0">
+				<property name="Class" value="Eat"/>
+				<property name="Delay" value="1"/>
+				<property name="Sound_start" value="player_drinking"/>
+			</property>
+			
+			<effect_group tiered="false" >
+				<requirement name="NotHasBuff" buff="buffIsOnFire"/>	
+					<display_value name="dBlockDamage" value="0.1"/>
+					<display_value name="dRunSpeed" value="0.1"/>
+					<display_value name="dWalkSpeed" value="0.1"/>
+					<display_value name="dHealthAmount" value="0.25"/>
+					<display_value name="dMaxHealthBonus" value="5"/>
+					<display_value name="dStaminaRegen" value=".1"/>
+					<display_value name="dDuration" value="3600"/>
+					
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$buffGrandpasWheelchairRacingElixirDuration" operation="add" value="3603"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$buffGrandpasWheelchairRacingElixirDuration" operation="set" value="7203">
+						<requirement name="CVarCompare" cvar="$buffGrandpasWheelchairRacingElixirDuration" operation="GT" value="7203"/>
+					</triggered_effect>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffDrunkGrandpasWheelchairRacingElixir"/>
+					
+			</effect_group>
+			
+			<effect_group tiered="false">
+				<requirement name="HasBuff" buff="buffIsOnFire"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffExtinguishFire"/>
+			</effect_group>
+			
+		</item>
+		
+		<!-- Moonshine focuses on mellee type stuff -->
+		<item name="drinkJarGrandpasThemsFightinWordsMoonshine">
+			<property name="Tags" value="drinks"/>
+			<property name="HoldType" value="3"/>
+			<property name="Meshfile" value="@:Other/Items/Food/bottled_waterPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mglass"/>
+			<property name="DescriptionKey" value="drinkJarGrandpasThemsFightinWordsMoonshineDesc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="DisplayType" value="waterGrandpasThemsFightinWordsMoonshine"/>
+			<property name="CustomIcon" value="drinkJarGrandpasMoonshine"/>
+			<property name="CustomIconTint" value="0,171,255"/> 
+			<property name="CraftingIngredientTime" value="15"/>
+			<property name="EconomicValue" value="500"/>
+			<property name="Group" value="Food/Cooking,CFDrink/Cooking"/>
+			<property class="Action0">
+				<property name="Class" value="Eat"/>
+				<property name="Delay" value="1"/>
+				<property name="Sound_start" value="player_drinking"/>
+			</property>
+			
+			<effect_group tiered="false" >
+				<requirement name="NotHasBuff" buff="buffIsOnFire"/>		
+					<display_value name="dEntityDamage" value="0.05"/>
+					<display_value name="dAttacksPerMinute" value="0.05"/>
+					<display_value name="dBuffResistance1" value="0.1"/>
+					<display_value name="dBuffResistance2" value="0.1"/>
+					<display_value name="dBuffResistance3" value="0.1"/>
+					<display_value name="dGeneralDamageResist" value="0.15"/>
+					<display_value name="dDuration" value="3600"/>	
+					
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$buffGrandpasThemsFightinWordsMoonshineDuration" operation="add" value="3603"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$buffGrandpasThemsFightinWordsMoonshineDuration" operation="set" value="7203">
+						<requirement name="CVarCompare" cvar="$buffGrandpasThemsFightinWordsMoonshineDuration" operation="GT" value="7203"/>
+					</triggered_effect>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffDrunkGrandpasThemsFightinWordsMoonshine"/>
+			</effect_group>
+	
+			<effect_group tiered="false">
+				<requirement name="HasBuff" buff="buffIsOnFire"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffExtinguishFire"/>
+			</effect_group>
+			
+		</item>
+		<!-- Sauce focuses on ranged combat -->
+		<item name="drinkJarGrandpasGunbeltOilSauce">
+			<property name="Tags" value="drinks"/>
+			<property name="HoldType" value="3"/>
+			<property name="Meshfile" value="@:Other/Items/Food/bottled_waterPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mglass"/>
+			<property name="DescriptionKey" value="drinkJarGrandpasGunbeltOilSauceDesc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="CustomIcon" value="drinkJarGrandpasAwesomeSauce"/>
+			<property name="CustomIconTint" value="0,255,171"/> 
+			<property name="DisplayType" value="waterGrandpasGunbeltOilSauce"/>
+			<property name="CraftingIngredientTime" value="15"/>
+			<property name="EconomicValue" value="500"/>
+			<property name="Group" value="Food/Cooking,CFDrink/Cooking"/>
+			<property class="Action0">
+				<property name="Class" value="Eat"/>
+				<property name="Delay" value="1"/>
+				<property name="Sound_start" value="player_drinking"/>
+			</property>
+			
+			<effect_group tiered="false" >
+				<requirement name="NotHasBuff" buff="buffIsOnFire"/>		
+					<display_value name="dEntityDamage" operation="perc_add" value=".05" />	
+					<display_value name="dWeaponHandling" operation="perc_add" value="0.1" />
+					<display_value name="dReloadSpeedMultiplier" operation="perc_add" value="0.1" />
+					<display_value name="dRoundsPerMinute" operation="perc_add" value="0.05"/>
+					<display_value name="dBuffResistance" value="0.25"/>
+					<display_value name="dElementalDamageResist" value="0.25"/>
+					<display_value name="dDuration" value="3600"/>
+					
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$buffGrandpasGunbeltOilSauceDuration" operation="add" value="3603"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$buffGrandpasGunbeltOilSauceDuration" operation="set" value="7203">
+						<requirement name="CVarCompare" cvar="$buffGrandpasGunbeltOilSauceDuration" operation="GT" value="7203"/>
+					</triggered_effect>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffDrunkGrandpasGunbeltOilSauce"/>
+			</effect_group>
+		</item>
+	</append>
+	<!-- end adding several kinds of drinks -->
+
+
+	<!--adding different resource bundles and stacks -->
+	<append xpath="/items">	
+		<!--set a default bundle icon-->
+		<item name="SNTBundleTemplate">
+			<property name="Extends" value="resourceRockSmallBundle"/>
+			<property name="ItemTypeIcon" value="bundle"/> <!--set a default bundle icon-->
+		</item>		
+	</append>
+	
+	<insertAfter xpath ="items/item[@name='qt_raphael']">
+		<!--books, mags etc for general use-->
+		<item name="playerExplosiveBarrelSchematic">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="cntBarrelGasSingle00"/>
+			<property name="DescriptionKey" value="playerExplosiveBarrelSchematicDesc"/>
+			<property name="Unlocks" value="playerExplosiveBarrel"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="playerExplosiveBarrel" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="GiveExp" exp="50"/>
+			</effect_group>
+		</item>
+		
+		<!--The newspaper clippings tell a story, there are 4 parts to the story and the clippings are used 
+			in a recipe to create a 'full newspaper' to get the conclusion of the story.
+			Each Grim Tales story (currently 4) has a clipping somewhere in the story, so the 
+			player completes all the grim tales to get the newspaper story conclusion -->
+		<item name="resourceNewsPaperClipping1">
+			<property name="HoldType" value="45"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="newspaperDecor03"/>
+			<property name="DescriptionKey" value="resourceNewsPaperClipping1Desc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceNewsPaperClipping2">
+			<property name="HoldType" value="45"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="newspaperDecor03"/>
+			<property name="DescriptionKey" value="resourceNewsPaperClipping2Desc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceNewsPaperClipping3">
+			<property name="HoldType" value="45"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="newspaperDecor03"/>
+			<property name="DescriptionKey" value="resourceNewsPaperClipping3Desc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceNewsPaperClipping4">
+			<property name="HoldType" value="45"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="newspaperDecor03"/>
+			<property name="DescriptionKey" value="resourceNewsPaperClipping4Desc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--the final article-->
+		<item name="resourceNewsPaperArticle">
+			<property name="HoldType" value="45"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="newspaperDecor02"/>
+			<property name="DescriptionKey" value="resourceNewsPaperArticleDesc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--END books, mags etc for general use-->
+		
+		<!--Burial Site inspection quest (Mary's revenge)
+			Test code-->
+		<item name="qt_burialSiteMarysRevengeNote">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="schematicMaster"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="DescriptionKey" value="qt_burialSiteMarysRevengeNote"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="graveRobbingOne"/>
+			</property>
+		</item>
+		<!--test code - starts the Coven House chapter of Marys Revenge-->
+		<item name="qt_burialSiteMarysRevengeCovenHouse">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="schematicMaster"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="DescriptionKey" value="qt_burialSiteMarysRevengeCovenHouseDesc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="graveRobbingCovenHouse"/>
+			</property>
+		</item>
+		<!--buriedPatrolCar loot-->
+		<item name="qt_burialPatrolCarNote">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="cntBookPile08"/>
+			<!--<property name="CustomIconTint" value="255,152,152"/>-->
+			<property name="DescriptionKey" value="qt_burialPatrolCarNoteDesc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="buriedPatrolCar"/>
+			</property>
+		</item>
+		
+		
+		
+		<!--recipe books for the armour mods -->
+		<item name="modRagdollSpecialSchematic">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="modMeleeStunBatonRepulsor"/>
+			<property name="CustomIconTint" value="0,171,255"/>
+			<property name="Unlocks" value="modElectricSpecial"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="modRagdollSpecial" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="GiveExp" exp="50"/>
+			</effect_group>
+		</item>
+		<item name="modElectricSpecialSchematic">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="modGunMeleeNiCdBattery"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="Unlocks" value="modElectricSpecial"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="modElectricSpecial" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="GiveExp" exp="50"/>
+			</effect_group>
+		</item>
+		<!--combined - this is the only one being used -->
+		<item name="modCrowdControlSchematic">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="modMeleeStunBatonRepulsor"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="Unlocks" value="modCrowdControl"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="modCrowdControl" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="GiveExp" exp="50"/>
+			</effect_group>
+		</item>
+		<!--end recipe books for the armour mods-->
+		
+		<!--END books, mags etc for quests-->
+		
+		
+		<!--items for CrowdControl (MissingPatrolCar) mod recipes-->
+		<item name="hafniumHydrideMagnet">
+			<property name="HoldType" value="45"/>
+			<property name="Tags" value="modCrowdControl"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="CustomIcon" value="helipad"/>
+			<property name="CustomIconTint" value="0,200,255"/> 
+			<property name="Weight" value="1"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="10"/> <!-- STK loot -->
+			<property name="Group" value="Resources"/>
+			<property name="DescriptionKey" value="hafniumHydrideMagnetDesc"/>
+		</item>
+		
+		<item name="advancedClothingMesh">
+			<property name="HoldType" value="45"/>
+			<property name="Tags" value="modCrowdControl"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="CustomIcon" value="tarpHangingWhite"/>
+			<property name="CustomIconTint" value="46,189,141"/>
+			<property name="Weight" value="1"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="10"/> <!-- STK loot -->
+			<property name="Group" value="Resources"/>
+			<property name="DescriptionKey" value="advancedClothingMeshDesc"/>
+		</item>	
+
+		<!--nicad battery -->
+		<item name="chargedNiCdBattery" > 
+			<property name="HoldType" value="45"/>
+			<property name="Tags" value="modCrowdControl"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="CustomIcon" value="waterHeaterWhite"/> <!--resourceScopeLens-->
+			<property name="CustomIconTint" value="255,150,150"/>
+			<property name="Weight" value="1"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="Stacknumber" value="10"/> <!-- STK loot -->
+			<property name="Group" value="Resources"/>
+			<property name="DescriptionKey" value="chargedNiCdBatteryDesc"/>
+		</item>
+		<!--end items for armour mod (CrowdControl mod) recipes-->
+	</insertAfter>
+	
+	<append xpath="/items">
+		<!-- Mary's Revenge  - special homemade rifle, uses magnum rounds 
+			Can use with shotgun tube extender, full auto, burst mods
+			Add tag (bookMagnumV4) for the '44 Magnum vol 4 book' logic.
+			-->
+		<item name="marysRevengeHomemadeRifle">
+			<property name="Tags" value="bookMagnumV4,weapon,firingMode,modGunShotgunTubeExtenderMagazine,holdBreathAiming,reloadPenalty,gun,barrelAttachments,sideAttachments,smallTopAttachments,mediumTopAttachments,largeTopAttachments,stock,bottomAttachments,attPerception,perkDeadEye,attachmentsIncluded,canHaveCosmetic,rifleSkill"/>
+			<property name="HoldType" value="85"/>
+			<property name="Meshfile" value="@:Other/Items/Weapons/Ranged/LeverActionRifle/leverActionRiflePrefab.prefab"/>
+			<property name="Material" value="MRifleParts"/>
+			<property name="TintColor" value="239,200,162"/>
+			<property class="UMA">
+				<property name="UMA.Overlay0Tint" value="239,200,162"/>
+			</property>
+			<property name="DescriptionKey" value="marysRevengeHomemadeRifleDesc"/>
+			<property name="CustomIcon" value="gunRifleT2LeverActionRifle"/>
+			<property name="CustomIconTint" value="239,200,162"/>
+			<property name="DisplayType" value="rangedGun"/>
+			<property name="RepairTools" value="resourceRepairKit"/>
+			<property name="DegradationBreaksAfter" value="false"/>
+			<property name="SoundJammed" value="weapon_jam"/>
+			<property name="Attachments" value="meleeToolFlashlight02"/>
+			<property name="CrosshairOnAim" value="true"/> <!-- aimTest **-->
+			<property name="CrosshairUpAfterShot" value="true"/> <!-- aimTest -->
+			<property name="Sound_Sight_In" value="rifle_sight_in"/>
+			<property name="Sound_Sight_Out" value="rifle_sight_out"/>
+			<property name="LightSource" value="lightSource"/> <!-- Start: Needed for the attachment flashlight -->
+			<property name="ActivateObject" value="Attachments/flashlight/lightSource"/>
+			<property name="AttachmentFlashlight" value="meleeToolFlashlight02"/> <!-- End: Needed for the attachment flashlight -->
+			<property name="Group" value="Ammo/Weapons,Ranged Weapons"/>
+			<property name="RepairExpMultiplier" value="10.8"/>
+			<property name="LightValue" value=".45"/>
+			<property name="EconomicValue" value="2000"/>
+			<property name="ShowQuality" value="true"/>
+			<property name="SoundUnholster" value="weapon_unholster"/>
+			<property name="SoundHolster" value="weapon_holster"/>
+			
+			<property class="Action0">
+				<property name="Class" value="Ranged"/>
+				<property name="Delay" value=".4"/> <!-- obsolete if rounds per minute exists -->
+				<property name="Magazine_items" value="ammo44MagnumBulletBall,ammo44MagnumBulletHP,ammo44MagnumBulletAP"/>
+				<property name="Reload_time" value="1.8"/>
+				<!-- silencer stuff -->
+				<!--<property name="Sound_start" value="sniperrifle_s_fire"/>   
+				<property name="Sound_loop" value="sniperrifle_s_fire"/>-->
+				<property name="Sound_start" value="lever_action_rifle_fire"/>
+				<property name="Sound_loop" value="lever_action_rifle_fire"/>
+				
+				<property name="Sound_repeat" value=""/>
+				<property name="Sound_end" value="silencefiller"/>
+				<property name="Sound_empty" value="dryfire"/>
+				<property name="Sound_reload" value=""/>
+				<property name="AutoReload" value="false"/>
+				<property name="Particles_muzzle_fire" value="gunfire_SMG"/>
+				<property name="Particles_muzzle_fire_fpv" value="gunfire_SMG_fpv"/>
+				<requirement name="CVarCompare" cvar="_underwater" operation="LT" value=".98"/>
+						<property name="triggerEffectTriggerPullDualsense" value="RifleTrigger"/>
+						<property name="triggerEffectTriggerPullXbox" value="PistolTrigger"/>
+						<property name="triggerEffectTriggerShootDualsense" value="RifleShoot"/>
+						<property name="triggerEffectTriggerShootXbox" value="PistolShoot"/>
+			</property>
+			<property class="Action1">
+				<property name="Class" value="Zoom"/>
+				<property name="Zoom_max_out" value="55"/>
+				<property name="Zoom_max_in" value="55"/>
+				<!-- <property name="ScopeCameraOffset" value="0,.0262,-.05"/> -->
+						<property name="zoomTriggerEffectTriggerPullDualsense" value="PistolZoom"/>
+						<property name="zoomTriggerEffectTriggerPullXbox" value="PistolZoom"/>
+			</property>
+			<effect_group name="marysRevengeHomemadeRifle">
+				<passive_effect name="MaxRange" operation="base_set" value="170" tags="perkDeadEye"/>
+				<passive_effect name="DamageFalloffRange" operation="base_set" value="75" tags="perkDeadEye"/>
+				<passive_effect name="DamageFalloffRange" operation="perc_add" value="-.1,.05" tier="1,6" tags="perkDeadEye"/> <!-- random effective rng -->
+				<passive_effect name="BlockDamage" operation="base_add" value="-1" tags="perkDeadEye"/> <!-- damage offset -->
+				<passive_effect name="RoundsPerMinute" operation="base_set" value="120" tags="perkDeadEye"/>
+				<passive_effect name="BurstRoundCount" operation="base_set" value="3" tags="perkDeadEye"/>
+				<passive_effect name="MagazineSize" operation="base_set" value="8" tags="perkDeadEye"/>
+				<passive_effect name="ReloadSpeedMultiplier" operation="base_set" value="1" tags="perkDeadEye"/> <!-- 2.7s -->
+				<passive_effect name="ModSlots" operation="base_set" value="3,3,3,4,4,5" tier="1,2,3,4,5,6"/>
+				<passive_effect name="ModPowerBonus" operation="perc_add" value=".10" tags="EntityDamage,BlockDamage"/>
+				<passive_effect name="ModPowerBonus" operation="base_add" value="300" tags="EconomicValue"/>
+				<passive_effect name="EntityDamage" operation="base_add" value="46" tags="perkDeadEye"/> <!-- damage offset -->
+				<passive_effect name="EntityDamage" operation="perc_add" value="-.02,.02" tags="perkDeadEye"/> <!-- random EntityDmg -->
+				<passive_effect name="EntityDamage" operation="perc_add" value=".05,.25" tier="2,6" tags="perkDeadEye"/> <!-- tier bonus -->
+				<passive_effect name="BlockDamage" operation="perc_add" value="-.08,.08" tags="perkDeadEye"/> <!-- random BlockDmg -->
+				<passive_effect name="BlockDamage" operation="perc_add" value=".15,.75" tier="2,6" tags="perkDeadEye"/> <!-- tier bonus -->
+				<passive_effect name="WeaponHandling" operation="perc_add" value="-.08,.08" tags="perkDeadEye"/> <!-- random WeaponHandling -->
+
+				<passive_effect name="SpreadDegreesVertical" operation="base_set" value="3.2" tags="perkDeadEye"/>
+				<passive_effect name="SpreadDegreesHorizontal" operation="base_set" value="3.2" tags="perkDeadEye"/>
+				<passive_effect name="SpreadMultiplierAiming" operation="base_set" value=".066" tags="perkDeadEye"/>
+				<passive_effect name="SpreadMultiplierCrouching" operation="base_set" value=".8" tags="perkDeadEye"/>
+				<passive_effect name="SpreadMultiplierWalking" operation="base_set" value="1.5" tags="perkDeadEye"/>
+				<passive_effect name="SpreadMultiplierRunning" operation="base_set" value="2" tags="perkDeadEye"/>
+
+				<passive_effect name="KickDegreesVerticalMin" operation="base_set" value="0.7" tags="perkDeadEye"/>
+				<passive_effect name="KickDegreesVerticalMax" operation="base_set" value="1.5" tags="perkDeadEye"/>
+				<passive_effect name="KickDegreesHorizontalMin" operation="base_set" value="-.2" tags="perkDeadEye"/>
+				<passive_effect name="KickDegreesHorizontalMax" operation="base_set" value=".2" tags="perkDeadEye"/>
+
+				<passive_effect name="IncrementalSpreadMultiplier" operation="base_set" value="3.0" tags="perkDeadEye"/>
+				<passive_effect name="WeaponHandling" operation="base_set" value=".7" tags="perkDeadEye"/>
+
+				<passive_effect name="DegradationMax" operation="base_set" value="600,900" tier="1,6" tags="perkDeadEye"/>
+				<passive_effect name="DegradationPerUse" operation="base_set" value="1" tags="perkDeadEye"/>
+
+				<passive_effect name="DamageModifier" operation="base_add" value="300" tags="head"/>
+			</effect_group>
+			
+			<!-- silencer stuff -->			
+			<!--<property name="BarrelOffset" value="0,-.02,.2182"/>
+			<property name="BarrelScale" value=".88,.88,.88"/>
+			<property name="BarrelOffset" value="0,0,0"/>
+			<property name="BarrelScale" value="1,1,1"/>
+			<effect_group tiered="false" name="internal attachment prefab (A19)">
+				<requirement name="HoldingItemHasTags" tags="attachmentsIncluded"/>
+					<triggered_effect trigger="onSelfHoldingItemCreated" action="SetTransformActive" active="true" parent_transform="#HeldItemRoot" transform_path="silencer"/>
+			</effect_group-->
+			
+			<!--chance for complete bleed out -->
+			<effect_group>
+				<!--no bleedout for Marys Revenge final boss or dopplegangers-->
+				<requirement name="!EntityTagCompare" target="other" tags="magrat,magratt"/>
+				<requirement name="RandomRoll" seed_type="Random" min_max="0,100" operation="LTE" value="25"/> <!--default 25-->
+					<triggered_effect trigger="onSelfDamagedOther" action="AddBuff" target="other" buff="buffMarysRevengeBleedingTerminal"/>
+			</effect_group>
+			
+		</item>
+		<!-- end Mary's Revenge  - special homemade rifle-->
+		
+		<!--Magrats Sacrificial Knife. Powerful knife that also has bonus damage to ferals and radiated-->
+		<item name="marysRevengeMagratsSacrificialKnife">
+			<property name="Tags" value="magratsKnife,machete,knife,melee,grunting,light,longShaft,perkFlurryOfAgility,weapon,meleeWeapon,attAgility,perkDeepCuts,perkTheHuntsman,canHaveCosmetic,bladeSkill,corpseRemoval"/>
+			<property name="DisplayType" value="meleeKnife"/>
+			<property name="HoldType" value="36"/>
+			<property name="Meshfile" value="@:Other/Items/Weapons/Melee/Knives/hunting_knifePrefab.prefab"/>
+			<property name="Material" value="Mmetal"/>
+			<!--<property name="TintColor" value="28,142,199"/>-->
+			<property name="TintColor" value="64,0,115"/>
+			
+			<property name="CustomIcon" value="meleeWpnBladeT1HuntingKnife"/>
+			<property name="CustomIconTint" value="64,0,115"/>
+			<!--<property name="CustomIconTint" value="28,142,199"/>-->
+			<property name="DescriptionKey" value="marysRevengeMagratsSacrificialKnifeDesc"/>
+			<property name="ScrapTimeOverride" value="10.0"/>
+			<property name="RepairTools" value="resourceRepairKit"/>
+			<property name="DegradationBreaksAfter" value="false"/>
+			<property name="SoundJammed" value="ItemNeedsRepair"/>
+			<property name="SoundDestroy" value="wooddestroy1"/>
+			<property name="ShowQuality" value="true"/>
+			<property name="Group" value="Ammo/Weapons,Melee Weapons"/>
+			<property name="RepairExpMultiplier" value="5.5"/>
+			<property name="SoundUnholster" value="weapon_unholster"/>
+			<property name="SoundHolster" value="weapon_holster"/>
+			<property name="SoundPickup" value="machete_grab"/>
+			<property name="SoundPlace" value="machete_place"/>
+
+			<property class="Action0">
+				<property name="Class" value="DynamicMelee"/>
+				<property name="Damage_type" value="Piercing"/>
+				<property name="Sphere" value=".15"/>
+				<property name="Sound_start" value="knife_metal_swinglight"/>
+				<property name="ToolCategory.harvestingTools" value=".5" param1="1"/>
+				<property name="ToolCategory.Butcher" value="0" param1="5"/>
+				<property name="UseGrazingHits" value="true"/>
+				<property name="GrazeStart" value=".28"/>
+				<property name="GrazeEnd" value=".4"/>
+				<property name="SwingDegrees" value="90"/>
+				<property name="SwingAngle" value="90"/>
+				<property class="HitSounds">
+					<property name="Override0" value="organic" param1="metalstaborganic"/>
+				</property>
+				<property class="GrazeSounds">
+					<property name="Override0" value="organic" param1="metalgrazeorganic"/>
+				</property>
+			</property>
+			<property class="Action1">
+				<property name="Class" value="DynamicMelee"/>
+				<property name="Damage_type" value="Piercing"/>
+				<property name="Sphere" value=".15"/>
+				<property name="Sound_start" value="knife_metal_swingheavy"/>
+				<property name="ToolCategory.harvestingTools" value=".5" param1="1"/>
+				<property name="ToolCategory.Butcher" value="0" param1="5"/>
+				<property name="UsePowerAttackAnimation" value="true"/>
+				<property name="UseGrazingHits" value="true"/>
+				<property name="GrazeStart" value=".3"/>
+				<property name="GrazeEnd" value=".4"/>
+				<property name="SwingDegrees" value="80"/>
+				<property name="SwingAngle" value="140"/>
+				<property class="HitSounds">
+					<property name="Override0" value="organic" param1="metalstaborganic"/>
+				</property>
+				<property class="GrazeSounds">
+					<property name="Override0" value="organic" param1="metalgrazeorganic"/>
+				</property>
+			</property>
+			
+			<effect_group name="meleeWpnBladeT1HuntingKnife">
+				<passive_effect name="AttacksPerMinute" operation="base_set" value="120" tags="perkDeepCuts,perkFlurryOfAgility"/>
+				<passive_effect name="StaminaLoss" operation="base_set" value="6" tags="primary"/>
+				<passive_effect name="DegradationMax" operation="base_set" value="500,3000" tier="1,6" tags="perkDeepCuts"/>
+				<passive_effect name="DegradationPerUse" operation="base_set" value="1" tags="perkDeepCuts"/>
+				<passive_effect name="MaxRange" operation="base_set" value="2.3" tags="perkDeepCuts"/>
+				<passive_effect name="BlockRange" operation="base_set" value="3" tags="perkDeepCuts"/>
+				<passive_effect name="ModSlots" operation="base_set" value="2,2,3,3,4,5" tier="1,2,3,4,5,6"/>
+				<passive_effect name="ModPowerBonus" operation="perc_add" value=".10" tags="EntityDamage,BlockDamage"/>
+				<passive_effect name="ModPowerBonus" operation="base_add" value="300" tags="EconomicValue"/>
+				<passive_effect name="EntityDamage" operation="base_set" value="28" tags="perkDeepCuts,knife"/> <!-- meleeWpnBladeT1HuntingKnife -->
+				<passive_effect name="EntityDamage" operation="perc_add" value="-.04,.04" tags="perkDeepCuts"/> <!-- random EntityDmg -->
+				<passive_effect name="EntityDamage" operation="perc_add" value=".1,.5" tier="2,6" tags="perkDeepCuts"/> <!-- tier bonus -->
+				<passive_effect name="BlockDamage" operation="base_set" value="22.5" tags="perkDeepCuts"/>
+				<passive_effect name="BlockDamage" operation="perc_add" value="-.04,.04" tags="perkDeepCuts"/> <!-- random BlockDmg -->
+				<passive_effect name="BlockDamage" operation="perc_add" value=".1,.5" tier="2,6" tags="perkDeepCuts"/> <!-- tier bonus -->
+				<passive_effect name="DamageModifier" operation="perc_add" value="-.8" tags="earth"/>
+				<passive_effect name="DamageModifier" operation="perc_add" value="-.8" tags="stone"/>
+				<passive_effect name="DamageModifier" operation="perc_add" value="-.8" tags="metal"/>
+				<passive_effect name="DamageModifier" operation="perc_add" value=".6" tags="organic"/>
+				<!-- <passive_effect name="DamageModifier" operation="perc_add" value="0" tags="organic"/> affects organic block harvesting based on block.material.damage_category, not animal corpse harvesting -->
+				<passive_effect name="HarvestCount" operation="base_set" value="1" tags="butcherHarvest"/>
+				<!--<passive_effect name="BlockDamage" operation="perc_add" value="6" tags="blockButcher"/>-->
+				<passive_effect name="DismemberChance" operation="base_add" value="0.5"/>
+			</effect_group>
+			
+			<effect_group name="Power Attack">
+				<passive_effect name="EntityDamage" operation="perc_add" value="1" tags="secondary"/>
+				<passive_effect name="BlockDamage" operation="perc_add" value="1" tags="secondary"/>
+				<passive_effect name="AttacksPerMinute" operation="base_add" value="-0" tags="secondary"/>
+				<passive_effect name="StaminaLoss" operation="base_set" value="10" tags="secondary"/>
+				<!--slightly increase stamina regen-->
+				<passive_effect name="StaminaChangeOT" operation="perc_add" value=".25" tags="secondary"/>
+				
+				<!--one shots any animal for Magrats sacrifices, this includes dire wolves and zombie bears-->
+				<passive_effect name="EntityDamage" operation="perc_add" value="300" tags="secondary">  <!--way more than needed-->
+					<requirement name="EntityTagCompare" target="other" tags="animal"/>
+				</passive_effect>
+				<!--additional damage to ferals and radiated zombies for Magrat's defense-->
+				<!--radiated, charged and infernal also have the 'feral' tag so this is cummulative for radiated zombies-->
+				<passive_effect name="EntityDamage" operation="perc_add" value="2" tags="secondary"> <!-- +200% damage-->
+					<requirement name="EntityTagCompare" target="other" tags="feral"/>
+				</passive_effect>
+				<passive_effect name="EntityDamage" operation="perc_add" value="3" tags="secondary">  <!-- +500% damage-->
+					<requirement name="EntityTagCompare" target="other" tags="radiated"/>
+				</passive_effect> 
+				<passive_effect name="EntityDamage" operation="perc_add" value="7" tags="secondary">  <!-- +700% damage-->
+					<requirement name="EntityTagCompare" target="other" tags="charged"/>
+				</passive_effect>
+				<passive_effect name="EntityDamage" operation="perc_add" value="9" tags="secondary">  <!-- +900% damage-->
+					<requirement name="EntityTagCompare" target="other" tags="infernal"/>
+				</passive_effect>
+				<!--extra dismember change for charged and infernals-->
+				<passive_effect name="DismemberChance" operation="base_add" value="0.2">
+					<requirement name="EntityTagCompare" target="other" tags="charged,infernal"/>
+				</passive_effect>
+				
+			</effect_group>
+			
+			<effect_group name="sneak damage bonus">
+				<requirement name="CVarCompare" cvar="_crouching" operation="Equals" value="1"/>
+				<requirement name="CVarCompare" cvar="_notAlerted" operation="GT" value="0" target="other"/>
+					<passive_effect name="DamageBonus" operation="base_add" value="4"/>
+					<passive_effect name="EntityDamage" operation="perc_add" value="4" tags="perkDeepCuts"/>
+					<display_value name="dEntityDamageSneak" value="4"/>
+			</effect_group>
+			
+			<effect_group tiered="false">
+				<!--some protection for the knife bearer-->
+				<passive_effect name="PhysicalDamageResist" operation="base_add" value="5" />
+				<passive_effect name="ElementalDamageResist" operation="base_add" value="10" />
+				<!--add some stamina back on a kill-->
+				<triggered_effect trigger="onSelfKilledOther" action="ModifyStats" stat="Stamina" operation="add" value="20">
+					<requirement name="HoldingItemHasTags" tags="magratsKnife"/>
+				</triggered_effect>
+			</effect_group>
+			
+		</item>
+		<!--END Magrats Sacrificial Knife-->
+		
+		<!--TEST code to run the final Mary's Revenge boss fight-->
+		<item name="qt_RunMarysRevengeFinalBoss">
+			<property name="Extends" value="schematicMaster"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="CustomIcon" value="schematicMaster"/>
+			<property name="CustomIconTint" value="0,255,180"/>
+			<property name="DescriptionKey" value="qt_RunMarysRevengeFinalBossDesc"/>
+			<effect_group tiered="false"> 
+			  <triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffTest35" />
+			</effect_group>
+		</item>
+				
+		<item name="resourceRunTestQuest">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="questMaster"/>
+			<property name="CustomIconTint" value="0,255,128"/>
+			<property name="DescriptionKey" value="quest_TestCode"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="createSummoningPie"/> 
+			</property>
+		</item>
+		<!--END TEST CODE-->
+		
+		<!--start 3 pages from Mary's Diary-->
+		<!--this page tells a bit of Mary's story. Bring context to the story-->
+		<item name="resourceMarysDiaryPage1">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="resourceMarysDiaryPage1Desc"/>
+			<property name="CustomIcon" value="questMaster"/>
+			<property name="CustomIconTint" value="0,255,128"/>
+		</item>
+		<!--this page starts the graveRobbingCovenHouse quest where the player looks for Magrat's sisters grave-->
+		<item name="resourceMarysDiaryPage2">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="questMaster"/>
+			<property name="CustomIconTint" value="0,255,128"/>
+			<property name="DescriptionKey" value="resourceMarysDiaryPage2Desc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="graveRobbingCovenHouse"/> 
+			</property>
+		</item>
+		<!--this page start the quest for the player to hunt down pieces of an artifact that will help
+			the player fight Magrat - its an optional quest, Magrat can be killed without the artifact 
+			but it makes it a lot easier for the player-->
+		<item name="resourceMarysDiaryPage3">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="questMaster"/>
+			<property name="CustomIconTint" value="0,255,128"/>
+			<property name="DescriptionKey" value="resourceMarysDiaryPage3Desc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="graveRobbingIpsloreTheRed"/> 
+			</property>
+			<!--
+			<effect_group tiered="false">
+	
+				<requirement name="HasBuff" buff="buffIsOnFire"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffExtinguishFire"/>
+			</effect_group>
+			-->
+		</item>
+		<!--end 3 pages from Mary's diary-->
+		<!--Mary's Diary - found in marysRevengeArtifactContainer and contains
+			the three pages (resourceMarysDiaryPageX) defined above--> 
+		<item name="resourceMarysDiary">
+			<property name="Extends" value="questRewardBundleMaster"/>
+			<property name="ItemTypeIcon" value="book"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/bookPrefab.prefab"/>
+			<property name="CustomIcon" value="schematicMaster"/>
+			<property name="CustomIconTint" value="0,255,128"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="DescriptionKey" value="resourceMarysDiaryDesc"/>
+			<property class="Action0">
+				<property name="Create_item" value="resourceMarysDiary,resourceMarysDiaryPage1,resourceMarysDiaryPage2,resourceMarysDiaryPage3"/>
+				<property name="Create_item_count" value="1,1,1,1"/>
+			</property>
+		</item>
+		
+		<!-- reward bundle stuff that drops Mary's Revenge rifle above (see quests.xml)-->
+		<!-- cursed artifact container from Burial Site One quest
+			 When the container is opened a quest is called to spawn 
+			 screamers (cant spawn zombies from this item, need to use a quest)-->
+		<!--this item will give out Mary's revenge WITH the screamers-->
+		<item name="marysRevengeArtifactContainer">
+			<property name="Extends" value="questRewardBundleMaster"/>
+			<property name="Tags" value="graveRobbingOneCoffin"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="cntWoodenChestRottenClosed"/>
+			<property name="CustomIconTint" value="239,200,162"/>
+			<property name="ItemTypeIcon" value="bundle"/>
+			<property name="DescriptionKey" value="rewardMarysRevengeBundleDesc"/>
+			<property class="Action0">
+				<property name="Create_item" value="marysRevengeHomemadeRifle,ammo44MagnumBulletAP,resourceMarysDiary"/>
+				<property name="Create_item_count" value="6,300,1"/>
+			</property>
+			<!-- we want to spawn some zombies but dont seem to be able to do that from here-
+				Have to call an event (cant spawn zombies from the event either when using SpawnEntity for some reason)
+				so then have to call a quest (from the event) that then spawns zombies and gives Mary's Revenge-->
+			<effect_group tiered="false">	
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="CallGameEvent" event="eventMarysRevengeArtifactContainerOpened"/>
+			</effect_group>
+		</item>
+		
+		<!--this item will give out Mary's Revenge WITHOUT the screamers-->
+		<item name="rewardMarysRevengeBundle">
+			<property name="Extends" value="questRewardBundleMaster"/>
+			<property name="Tags" value="graveRobbingOneCoffin"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="gunRifleT2LeverActionRifle"/>
+			<property name="CustomIconTint" value="239,200,162"/>
+			<property name="ItemTypeIcon" value="bundle"/>
+			<property name="DescriptionKey" value="rewardMarysRevengeBundleDesc"/>
+			<property class="Action0">
+				<property name="Create_item" value="marysRevengeHomemadeRifle,ammo44MagnumBulletAP,resourceMarysDiary"/>
+				<property name="Create_item_count" value="6,300,1"/>
+			</property>
+		</item>
+		
+		<!--Judy's bones (Magrat's sister) - the player gets the bones of the cult leader's sister.
+			They use the bones to summon Magrat - see also quests.xml:graveRobbingCovenHouse-->
+		<item name="resourceCultBone"> 
+			<!--<property name="HoldType" value="45"/>-->
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="HoldType" value="2"/>
+			<property name="Meshfile" value="@:Other/Items/Crafting/femur.fbx"/>
+			<property name="Material" value="MresourceBone"/>
+			<property name="DescriptionKey" value="resourceCultBoneDesc"/>
+			<property name="Weight" value="1"/>
+			<property name="Stacknumber" value="1200"/> 
+			<property name="CustomIcon" value="resourceBone"/>
+			<property name="CustomIconTint" value="28,142,199"/>
+			<property name="EconomicValue" value="5"/>
+			<property name="SellableToTrader" value="false"/>
+			<property name="Group" value="Resources"/>
+			<property name="SoundPickup" value="bones_grab"/>
+			<property name="SoundPlace" value="bones_place"/>
+		</item>
+		<!--same as resourceCultBone, but specifically labelled as belonging to Judy-->
+		<item name="resourceCultBoneJudy"> 
+			<property name="Extends" value="resourceCultBone" />
+			<property name="DescriptionKey" value="resourceCultBoneJudyDesc"/>
+		</item>
+		
+		<!--lock of witches hair, same as resourceCultBone above-->
+		<item name="resourceWitchesHair">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="hangingMoss"/>
+			<property name="DescriptionKey" value="resourceWitchesHairDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item> 
+		
+		<!--other items for Judy coffin-->
+		<item name="resourceDeadBird">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="sleeperVultureAnimal"/>
+			<property name="DescriptionKey" value="resourceDeadBird"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item> 
+		<!--end Judy's items-->
+
+		<!--items for Magrat's body (in addition to marysRevengeMagratsSacrificialKnife)-->
+		<item name="resourcePieceOfCheese">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="corrugatedMetalAirDuctHalfRampCap"/>
+			<property name="CustomIconTint" value="251,219,101"/>
+			<property name="DescriptionKey" value="resourcePieceOfCheeseDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--Ipsore's grave items-->
+		<!--his boots-->
+		<item name="resourceIpsloresBoots">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="cntShoesPileLeatherBoots"/>
+			<property name="DescriptionKey" value="resourceIpsloresBootsDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--A dusty torn semi-legible book called Disc[something] (hard to make out)
+			either Discwonder or maybe Discworld.
+			Ipslore is a wizard in Terry Pratchet's Disc World series.-->
+		<item name="resourceDiscWorldBook">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="cntBookPile07"/>
+			<property name="DescriptionKey" value="resourceDiscWorldBookDesc"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--END Ipslores grave items-->
+		
+		<!--note to start the quests.xml:graveRobbingMagratsSister quest.
+			Given to the player in a drop from a screamer during the quests.xml:graveRobbingCovenHouse quest.
+			This is Magrats sister's grave. The player gets some artifacts from this grave to summon Magrat-->
+		<item name="qt_MaryRevengeJudysGrave">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,255,180"/>
+			<property name="DescriptionKey" value="qt_MaryRevengeJudysGraveDesc"/>
+			<property class="Action0">
+				<!--scouting a snow trader-->
+				<property name="QuestGiven" value="graveRobbingMagratsSister"/> 
+			</property>
+
+		</item>
+		<!--items for the Coven House bundle, dropped when the player goes to Coven House
+			looking for a map to Magrats sisters grave location-->
+		<item name="resourceUsedToiletPaper">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="garbage_decor1"/>
+			<property name="DescriptionKey" value="resourceUsedToiletPaper"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceLavenderFlowers">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="forestFlower"/>
+			<property name="DescriptionKey" value="resourceLavenderFlowers"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceUncookedRice">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="glassBroken_02"/>
+			<property name="DescriptionKey" value="resourceUncookedRice"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--End items for the Coven House bundle-->
+		
+
+		
+		<!--loot bundle that contains the map dropped at Coven House, the map shows the location of
+			Judys grave. This is dropped by a general screamer (entityclasses:marysRevengeCovenHouseLootScreamer )
+			not a Boss.
+			
+			**FOR SOME REASON THIS OBJECT SHOWS A 'MODIFY' OPTION to the player as well as the normal USE option.
+			I dont know why, its only for this object. All other SNTBundleTemplate objects are the same 
+			and dont have an issue. (e.g. interloperSupplyCrateDukesBundle) 
+			I dont have enough hair left to deal with this.-->
+		<item name="marysRevengeCovenHouseBundle">
+			<property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="cntTrashPile08"/>
+			<property name="CustomIconTint" value="190,150,100"/>
+			<property name="DescriptionKey" value="marysRevengeCovenHouseBundleDesc"/>
+
+			<property class="Action0">
+				<property name="Create_item" value="qt_MaryRevengeJudysGrave,resourceUsedToiletPaper,resourceLavenderFlowers,resourceUncookedRice"/> 
+				<property name="Create_item_count" value="1,1,1,1"/>  
+			</property>
+			<!--this bundle is in the final loot - which means the player no longer needs to track the spawned screamers-->
+			<effect_group>	
+				<requirement name="HasBuff" buff="buff_trackCovenHouseScreamers"/>
+					<triggered_effect trigger="onSelfPrimaryActionEnd" action="RemoveBuff" buff="buff_trackCovenHouseScreamers"/>	
+			</effect_group>
+		</item>	
+
+		<!--Judy Witch's corpse for her grave (quests.xml:graveRobbingMagratsSister)-->
+		<item name="resourceJudysCorpse">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanCorpse2"/>
+			<property name="DescriptionKey" value="resourceJudysCorpseDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--vial of blood, judies corpse loot-->
+		<item name="resourceBloodVile">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaint"/>
+			<property name="CustomIcon" value="modDyeWhite"/>
+			<property name="CustomIconTint" value="149,52,54"/>
+			<property name="DescriptionKey" value="resourceBloodVileDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+	
+		<!--the output of the concoction the player creates from the hair and bones of Magrats sisters grave-->
+		<!--churchBellHanging  -->
+		<item name="resourceWitchBrew">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="churchBellHanging"/>
+			<property name="DescriptionKey" value="resourceWitchBrewDesc"/>
+			<property name="CustomIconTint" value="28,142,199"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		
+		<!--Pumkin Pie made from the bones and hair of Judy, Magrats sister.
+			Used to summon Magrat on consumption - mary's revenge story.
+			-->
+		<!--this item will give out Mary's Revenge WITHOUT the screamers-->
+		<item name="foodPumpkinJudyPieWhole">
+			<property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="foodBlueberryPie"/>
+			<property name="CustomIconTint" value="28,142,199"/>
+			<property name="ItemTypeIcon" value="bundle"/>
+			<property name="DescriptionKey" value="foodPumpkinJudyPieWholeDesc"/>
+			<property name="Group" value="Science,Medical,TCMedical"/>
+			
+			<property class="Action0">
+				<property name="Create_item" value="foodPumpkinJudyPieSlice"/>
+				<property name="Create_item_count" value="6"/>
+			</property>
+		</item>
+		<!--individual slice of above foodPumpkinJudyPieWhole -->
+		<item name="foodPumpkinJudyPieSlice">
+			<property name="Tags" value="food,fitness"/>
+			<property name="HoldType" value="31"/>
+			<property name="DisplayType" value="food"/>
+			<property name="Meshfile" value="@:Other/Items/Food/parcelGenericPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="CustomIcon" value="foodPumpkinPie"/>
+			<property name="CustomIconTint" value="28,142,199"/>
+			<property name="DescriptionKey" value="foodPumpkinJudyPieSliceDesc"/>
+			<property name="Material" value="Morganic"/>
+			<property name="Stacknumber" value="10"/> <!-- STK food -->
+			<property name="EconomicValue" value="0"/>
+			<property name="SoundPickup" value="pie_grab"/>
+			<property name="SoundPlace" value="pie_place"/>
+			<property class="Action0">
+				<property name="Class" value="Eat"/>
+				<property name="Delay" value="1.0"/>
+				<property name="Sound_start" value="eatSickSound"/>
+				<!-- jar from cooking food <property name="Create_item" value="drinkJarEmpty"/> -->
+			</property>
+			<property name="Group" value="Food/Cooking,CFFood/Cooking"/>
+			<effect_group tiered="false" name="Food Tier 2">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="$foodAmountAdd" operation="add" value="50"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="foodHealthAmount" operation="add" value="25"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar=".foodStaminaBonusAdd" operation="add" value="20"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffProcessConsumables"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffMarysRevengeFinalBossSummon">
+					<requirement name="!HasBuff" buff="buffMarysRevengeFinalBossSummon"/>
+					<requirement name="CVarCompare" cvar="marysRevengeFinalTrigger" operation="LT" value="1"/>
+				</triggered_effect>	
+			</effect_group>
+		</item>
+		
+		
+		
+		<!--START Magrats Eye - consumable from Final Boss in Mary's Revenge story.
+			When consumed adds a buff that auto-tracks screamers. 
+			See buffs.xml:buff_MagratsLeftEye-->
+		<!-- the left overs from eating Magrats Eye below.
+			 A little puke and phlegm -->
+		<item name="magratsEyeBile">
+			<property name="Tags" value="food"/>
+			<property name="HoldType" value="31"/>
+			<property name="DisplayType" value="food"/>
+			<property name="Meshfile" value="@:Other/Items/Food/parcelGenericPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="glassDebris01"/>
+			<property name="CustomIconTint" value="229,255,193"/>
+			<property name="DescriptionKey" value="magratsEyeBile"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="SoundPickup" value="cornbread_grab"/>
+			<property name="SoundPlace" value="cornbread_place"/>
+			<property class="Action0">
+				<property name="Class" value="Eat"/>
+				<property name="Delay" value="1.0"/>
+				<property name="Sound_start" value="eatSickSound"/>
+				<property name="Create_item" value="magratsEyeBile"/>
+			</property>
+			<effect_group tiered="false" name="Food Tier 0">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyStats" stat="Health" operation="add" value="-5"/>
+			</effect_group>
+		</item>
+		<!--The Eye itself-->
+		<item name="magratsEye">
+			<property name="Tags" value="food"/>
+			<property name="HoldType" value="31"/>
+			<property name="DisplayType" value="food"/>
+			<property name="Meshfile" value="@:Other/Items/Food/parcelGenericPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="CustomIcon" value="resourceScopeLens"/>
+			<property name="CustomIconTint" value="179,96,96"/>
+			<property name="DescriptionKey" value="magratsEyeDesc"/>
+			<property name="Material" value="Morganic"/>
+			<property name="Stacknumber" value="1"/>
+			<property name="EconomicValue" value="0"/>
+			<property name="SoundPickup" value="cornbread_grab"/>
+			<property name="SoundPlace" value="cornbread_place"/>
+			<property class="Action0">
+				<property name="Class" value="Eat"/>
+				<property name="Delay" value="1.0"/>
+				<property name="Sound_start" value="eatSickSound"/>
+				<property name="Create_item" value="magratsEyeBile"/>
+			</property>
+
+			<effect_group tiered="false" name="Food Tier 1">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_MagratsLeftEye"/>
+			</effect_group>
+		</item>
+		<!--the final marys revenge boss loot bundle-->
+		<item name="marysRevengeFinalBossBundle"> 
+			<property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="goreBlockHumanCorpse2"/>
+			<property name="CustomIconTint" value="210,210,33"/>
+			<property name="DescriptionKey" value="marysRevengeFinalBossBundleDesc"/>
+			<property class="Action0">
+				<property name="Create_item" value="magratsEye"/> 
+				<property name="Create_item_count" value="1"/>  
+			</property>
+			<effect_group tiered="false">
+				<!--notify the buffs.xml:buffMarysRevengeFinalBossSummon buff that the Magrat's loot has been delivered to the players inventory.
+				This ends the Mary's Revenge Story-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_marysRevengeFinalTrigger"/> 
+				<!--call the reward event as the story is finished-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffMarysRevengeFinishedReward"/> 
+			</effect_group>	
+		</item>	
+
+		<!--test items to give and remove screamer tracking buff (Magrats Left Eye from Marys Revenge story.
+			--> 
+		<item name="testGiveScreamerTrackingBuff">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="DescriptionKey" value="testGiveScreamerTrackingBuffDesc"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_MagratsLeftEye"/>
+			</effect_group>
+		</item>
+		<item name="testRemoveScreamerTrackingBuff">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="DescriptionKey" value="testRemoveScreamerTrackingBuffDesc"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_RemoveMagratsLeftEye"/>
+			</effect_group>
+		</item>
+		<!--END Magrats Eye-->
+		
+		<!--found gyro items-->
+		<!--the assassins pistol is the same as a generic pistol but has a built in silencer
+			and gives a large bonus to stealth damage. This gun is only ever spawned as level 6-->
+		<item name="assassinsPistol">
+			<property name="Tags" value="AP_Stealth,noSilencer,weapon,ranged,holdBreathAiming,reloadPenalty,gun,shortRange,pistol,barrelAttachments,sideAttachments,smallTopAttachments,magazine,firingMode,attAgility,perkGunslinger,9mmGun,attachmentsIncluded,canHaveCosmetic,handgunSkill"/>
+			<property name="DisplayType" value="rangedGun"/>
+			<property name="HoldType" value="1"/> 
+			<property name="Meshfile" value="@:Other/Items/Weapons/Ranged/Pistol/PistolPrefab.prefab"/>
+			<property name="Material" value="MHandGunParts"/>
+			<property name="CustomIcon" value="gunHandgunT1Pistol"/>
+			<property name="CustomIconTint" value="209,200,185"/>
+			<property name="TintColor" value="209,200,185"/>
+			<property name="Weight" value="1"/>
+			<property name="ScrapTimeOverride" value="10.0"/>
+			<property name="RepairTools" value="resourceRepairKit"/>
+			<property name="DegradationBreaksAfter" value="false"/>
+			<property name="SoundJammed" value="weapon_jam"/>
+			<property name="Attachments" value="meleeToolFlashlight02"/>
+			<property name="CrosshairOnAim" value="true"/> <!-- aimTest -->
+			<property name="CrosshairUpAfterShot" value="true"/> <!-- aimTest -->
+			<property name="Sound_Sight_In" value="pistol_sight_in"/>
+			<property name="Sound_Sight_Out" value="pistol_sight_out"/>
+			<property name="LightSource" value="lightSource"/> <!-- Start: Needed for the attachment flashlight -->
+			<property name="ActivateObject" value="Attachments/flashlight/lightSource"/>
+			<property name="AttachmentFlashlight" value="flashlight02"/> <!-- End: Needed for the attachment flashlight -->
+			<property name="Group" value="Ammo/Weapons,Ranged Weapons"/>
+			<property name="RepairExpMultiplier" value="10.8"/>
+			<property name="LightValue" value=".45"/>
+			<property name="EconomicValue" value="500"/>
+			<property name="ShowQuality" value="true"/>
+			<property name="SoundUnholster" value="weapon_unholster"/>
+			<property name="SoundHolster" value="weapon_holster"/>
+			<property name="SoundPickup" value="pistol_grab"/>
+			<property name="SoundPlace" value="pistol_place"/>
+
+			<property class="Action0">
+				<property name="Class" value="Ranged"/>
+				<property name="Magazine_items" value="ammo9mmBulletBall"/>
+				<!--silencer stuff-->
+				<property name="Sound_start" value="AP_pistol_s_fire"/>   
+				<property name="Sound_loop" value="AP_pistol_s_fire"/>
+				<property name="Sound_end" value=""/>
+				<property name="Sound_empty" value="dryfire"/>
+				<property name="Sound_reload" value="pistol_reload"/>
+				<property name="AutoReload" value="false"/>
+				<property name="Particles_muzzle_fire" value="gunfire_pistol"/>
+				<property name="Particles_muzzle_fire_fpv" value="gunfire_pistol_fpv"/>
+				<requirement name="CVarCompare" cvar="_underwater" operation="LT" value=".98"/>
+				<property name="triggerEffectTriggerPullDualsense" value="PistolTrigger"/>
+				<property name="triggerEffectTriggerPullXbox" value="PistolTrigger"/>
+				<property name="triggerEffectShootDualsense" value="PistolShoot"/>
+				<property name="triggerEffectShootXbox" value="PistolShoot"/>
+			</property>
+			<property class="Action1">
+				<property name="Class" value="Zoom"/>
+				<property name="Zoom_max_out" value="55"/>
+				<property name="Zoom_max_in" value="55"/>
+				<property name="SightsCameraOffset" value="0,.0008,0"/>
+				<property name="zoomTriggerEffectPullDualsense" value="PistolZoom"/>
+				<property name="zoomTriggerEffectPullXb" value="PistolZoom"/>
+			</property>
+			<effect_group name="gunHandgunT1Pistol">
+				<passive_effect name="MaxRange" operation="base_set" value="50" tags="perkGunslinger,9mmGun"/>
+				<passive_effect name="DamageFalloffRange" operation="base_set" value="17" tags="perkGunslinger,9mmGun"/>
+				<passive_effect name="DamageFalloffRange" operation="perc_add" value="-.2,.2" tier="1,6" tags="perkGunslinger,9mmGun"/> <!-- random effective rng -->
+				<passive_effect name="RoundsPerMinute" operation="base_set" value="180" tags="perkGunslinger"/>
+				<passive_effect name="BurstRoundCount" operation="base_set" value="1" tags="perkGunslinger"/>
+				<passive_effect name="MagazineSize" operation="base_set" value="15" tags="perkGunslinger"/>
+				<!--changed modslots-->
+				<passive_effect name="ModSlots" operation="base_set" value="1,1,2,3,4,5" tier="1,2,3,4,5,6"/> 
+				<passive_effect name="ModPowerBonus" operation="perc_add" value=".10" tags="EntityDamage,BlockDamage"/>
+				<passive_effect name="ModPowerBonus" operation="base_add" value="300" tags="EconomicValue"/>
+				<passive_effect name="EntityDamage" operation="base_add" value="5" tags="perkGunslinger"/> <!-- damage offset -->
+				<passive_effect name="EntityDamage" operation="perc_add" value="-.02,.02" tags="perkGunslinger"/> <!-- random EntityDmg -->
+				<passive_effect name="EntityDamage" operation="perc_add" value=".05,.25" tier="2,6" tags="perkGunslinger"/> <!-- tier bonus -->
+				<passive_effect name="BlockDamage" operation="perc_add" value="-.08,.08" tags="perkGunslinger"/> <!-- random BlockDmg -->
+				<passive_effect name="BlockDamage" operation="perc_add" value=".15,.75" tier="2,6" tags="perkGunslinger"/> <!-- tier bonus -->
+				<passive_effect name="WeaponHandling" operation="perc_add" value="-.08,.08" tags="perkGunslinger"/> <!-- random WeaponHandling -->
+
+				<passive_effect name="SpreadDegreesVertical" operation="base_set" value="1.5" tags="perkGunslinger"/>
+				<passive_effect name="SpreadDegreesHorizontal" operation="base_set" value="1.5" tags="perkGunslinger"/>
+				<passive_effect name="SpreadMultiplierAiming" operation="base_set" value=".4" tags="perkGunslinger"/>
+				<passive_effect name="SpreadMultiplierCrouching" operation="base_set" value=".8" tags="perkGunslinger"/>
+				<passive_effect name="SpreadMultiplierWalking" operation="base_set" value="1.5" tags="perkGunslinger"/>
+				<passive_effect name="SpreadMultiplierRunning" operation="base_set" value="2.2" tags="perkGunslinger"/>
+
+				<passive_effect name="KickDegreesVerticalMin" operation="base_set" value=".7" tags="perkGunslinger"/>
+				<passive_effect name="KickDegreesVerticalMax" operation="base_set" value=".8" tags="perkGunslinger"/>
+				<passive_effect name="KickDegreesHorizontalMin" operation="base_set" value="-.25" tags="perkGunslinger"/>
+				<passive_effect name="KickDegreesHorizontalMax" operation="base_set" value=".25" tags="perkGunslinger"/>
+
+				<passive_effect name="IncrementalSpreadMultiplier" operation="base_set" value="2.0" tags="perkGunslinger,9mmGun"/>
+				<passive_effect name="WeaponHandling" operation="base_set" value=".95" tags="perkGunslinger"/> <!-- crosshair reset speed -->
+
+				<passive_effect name="DegradationMax" operation="base_set" value="300,400" tier="1,6" tags="perkGunslinger,9mmGun"/>
+				<passive_effect name="DegradationPerUse" operation="base_set" value="1" tags="perkGunslinger,9mmGun"/>
+			</effect_group>
+			
+			<!--stealth bonus-->
+			<effect_group tiered="false">
+				<requirement name="CVarCompare" cvar="_crouching" operation="Equals" value="1"/>
+				<requirement name="CVarCompare" cvar="_notAlerted" operation="GT" value="0" target="other"/>
+				<requirement name="ItemHasTags" tags="AP_Stealth"/>
+					<!--15x bonus on stealth --> 
+					<passive_effect name="DamageBonus" operation="base_add" value="11"/> 
+					<passive_effect name="EntityDamage" operation="perc_add" value="10"/>
+					<!--300% headshot damage on stealth-->
+					<passive_effect name="DamageModifier" operation="base_add" value="400" tags="head"/>
+					<!--extra damage for charged and infernals-->
+					<passive_effect name="DamageModifier" operation="base_add" value="200" tags="head"> 
+						<requirement name="EntityTagCompare" target="other" tags="charged"/>
+					</passive_effect>
+					<passive_effect name="DamageModifier" operation="base_add" value="300" tags="head">
+						<requirement name="EntityTagCompare" target="other" tags="infernal"/>
+					</passive_effect>
+			</effect_group>
+			
+			<!--silencer stuff-->
+			<property name="BarrelOffset" value="0,-.006,.127"/>
+			<property name="BarrelScale" value="1,1,1"/>
+			<effect_group tiered="false" name="internal attachment prefab (A19)">
+				<requirement name="HoldingItemHasTags" tags="attachmentsIncluded"/>
+					<triggered_effect trigger="onSelfHoldingItemCreated" action="SetTransformActive" active="true" parent_transform="#HeldItemRoot" transform_path="silencer"/>
+			</effect_group>
+		</item>
+		
+		<item name="resourcePilotsCorpse">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanCorpse3"/>
+			<property name="DescriptionKey" value="resourcePilotsCorpseDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceCIADudeCorpse">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanCorpse2"/>
+			<property name="DescriptionKey" value="resourceCIADudeCorpseDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceCIASecurityTag">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="signPosterWantedMissing03"/>
+			<property name="CustomIconTint" value="236,217,198"/>
+			<property name="DescriptionKey" value="resourceCIASecurityTagDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item> 
+		<item name="resourceCIABriefingNote">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="newspaperDecor03"/>
+			<property name="DescriptionKey" value="resourceCIABriefingNoteDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="foundGyroRewardSchematic">
+			<property name="Extends" value="schematicNoQualityMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="gyrocopterStatic"/>
+			<property name="DescriptionKey" value="foundGyroRewardSchematicDesc"/>
+			<property name="Unlocks" value="vehicleGyroCopterAccessories,vehicleGyroCopterChassis"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="vehicleGyroCopterAccessories" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="vehicleGyroCopterChassis" operation="set" value="1"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="GiveExp" exp="2000"/>
+			</effect_group>
+		</item>
+		<!--END found gyro items-->
+		
+		<!--generic items for visuals in coffins and patrol car loot slots-->
+		<!--simple placeholder item for a gore block in the loot-->
+		<item name="resourceIpsloresRemains">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanBones"/>
+			<property name="DescriptionKey" value="resourceIpsloresRemains"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceMarysRemains">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanBones"/>
+			<property name="DescriptionKey" value="resourceMarysRemains"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		
+		<item name="resourceGoreBlockHumanCorpse1">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanCorpse2"/>
+			<property name="DescriptionKey" value="resourceGoreBlockHumanCorpse1"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceGoreBlockHumanCorpse2">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreBlockHumanCorpse"/>
+			<property name="DescriptionKey" value="resourceGoreBlockHumanCorpse2"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceConeConstruction">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="coneConstruction"/>
+			<property name="DescriptionKey" value="resourceConeConstruction"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceCobweb">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="cobweb"/>
+			<property name="DescriptionKey" value="resourceCobweb"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceHubcap">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="hubcapNoMine"/>
+			<property name="CustomIconTint" value="176,172,168"/>
+			<property name="DescriptionKey" value="resourceHubcap"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceYoDawg">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="cntPoliceCar01"/>
+			<property name="DescriptionKey" value="resourceYoDawg"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		
+		<item name="resourceLuggage">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="cntLuggageMediumOpen"/>
+			<property name="DescriptionKey" value="resourceLuggage"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		
+		<!--end generic items-->
+	
+		<!--luggage for the found gyro storyline-->
+		<item name="foundGyroAgentLuggage">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="MresourceScrapPolymers"/>
+			<property name="CustomIcon" value="cntLuggageBigOpen"/>
+			<property name="DescriptionKey" value="foundGyroAgentLuggageDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		
+		<item name="resourcegGraveStone">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="graveStone02"/>
+			<property name="DescriptionKey" value="resourcegGraveStone"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+
+		<!--letters spelling out 'vengence'
+			Is placed in the MarysRevenge coffin-->
+		<item name="resourceLetterV">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="shapeFontV"/>
+			<property name="CustomIconTint" value="102,0,0"/>
+			<property name="DescriptionKey" value="resourceLetterV"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceLetterE">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="shapeFontE"/>
+			<property name="CustomIconTint" value="102,0,0"/>
+			<property name="DescriptionKey" value="resourceLetterE"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceLetterN">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="shapeFontN"/>
+			<property name="CustomIconTint" value="102,0,0"/>
+			<property name="DescriptionKey" value="resourceLetterN"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceLetterG">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="shapeFontG"/>
+			<property name="CustomIconTint" value="102,0,0"/>
+			<property name="DescriptionKey" value="resourceLetterG"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceLetterC">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="shapeFontC"/>
+			<property name="CustomIconTint" value="102,0,0"/>
+			<property name="DescriptionKey" value="resourceLetterC"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourceLetterA">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="shapeFontA"/>
+			<property name="CustomIconTint" value="102,0,0"/>
+			<property name="DescriptionKey" value="resourceLetterA"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--end letters spelling our 'vengeance'-->
+		<!--other stuff for the coffin-->
+		<item name="coffinClockBroken">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="wallClockBroken"/>
+			<property name="DescriptionKey" value="coffinClockBroken"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="coffinWoodSpikes">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="woodSpikesTrap1POI"/>
+			<property name="DescriptionKey" value="coffinWoodSpikes"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--end generic items for visuals in coffin and patrol car loot slots-->
+	
+	
+		<!--Interloper story -->
+		<!--Start Interloper story - this is started during the Pigeons Carry Diseases story and comes from a pigeon note-->
+		<!-- this will start the first 'scout trader' -->
+		<item name="qt_InterloperStoryNote">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,180,255"/>
+			<property name="DescriptionKey" value="qt_InterloperStoryNoteDesc"/>
+			<property class="Action0">
+				<!--scouting a desert trader is the start of the Interloper story-->
+				<property name="QuestGiven" value="quest_Interloper_ScoutTraderOne"/> 
+			</property>
+			<!--when the quest starts the player can then create the quest note again with a recipe, so they can repeat the story if they fail-->
+			<!--<effect_group tiered="false">
+			  <triggered_effect trigger="onSelfPrimaryActionEnd" action="ModifyCVar" cvar="qt_InterloperStoryNote" operation="set" value="1"/>
+			</effect_group>-->
+		</item>
+		<!-- note to start the second scout trader - follows qt_InterloperStoryNote-->
+		<item name="qt_InterloperStoryNote2">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+			<property name="DescriptionKey" value="qt_InterloperStoryNote2Desc"/>
+			<property class="Action0">
+				<!--scouting a snow trader-->
+				<property name="QuestGiven" value="quest_Interloper_ScoutTraderTwo"/> 
+			</property>
+
+		</item>
+		<!--Sound of Silence chapter:
+			note to start the creation of a transmitter and receiver to spy on Traders
+			Follows qt_InterloperStoryNote2.-->
+		<item name="qt_InterloperStoryNoteMaliciousActor">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+			<property name="DescriptionKey" value="qt_InterloperStoryNoteMaliciousActorDesc"/>
+			<property class="Action0">
+				<!--build and plant spyware device to listen in on Traders-->
+				<property name="QuestGiven" value="quest_Interloper_MaliciousActor"/> 
+			</property>
+		</item>
+		
+		<!--note given to player after completion of Interloper_MaliciousActor (receiver and transmitter 
+			have been placed and waiting for any msg interception.)
+			This note indicates the current end of the story - the story picks up later automatically
+			when a transmission is received-->
+		<item name="interloperSpywareSetupCompleteNote">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="interloperSpywareSetupCompleteNoteDesc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+		</item>
+		
+		<!--First Transmission Note given to the player when received at the Transmission Receiver.
+			(Timing of receipt is determined by buffs.xml:buffInterloperStory)-->
+		<item name="qt_InterloperFirstTransmissionReceived">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="qt_InterloperFirstTransmissionReceivedDesc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+		</item>
+		
+		<!-- Second transmittion note received.
+			 This starts the InterceptSupplyCrate chapter of Interloper 
+			 (Timing of receipt is determined by buffs.xml:buffInterloperStory)-->
+		<item name="qt_InterloperSecondTransmissionReceived">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+			<property name="DescriptionKey" value="qt_InterloperSecondTransmissionReceivedDesc"/>
+			<property class="Action0">
+				<!--go find that supply crate-->
+				<!--<property name="QuestGiven" value="quest_Interloper_InterceptTheSupplies"/> -->
+				<property name="QuestGiven" value="quest_Interloper_InterceptTheSupplies"/> 
+			</property>
+		</item>
+		
+		<!-- Third transmittion note received.
+			 This starts the final EpilogueTradeOff chapter of Interloper 
+			 (Timing of receipt is determined by buffs.xml:buffInterloperStory)-->
+		<item name="qt_InterloperThirdTransmissionReceived">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+			<property name="DescriptionKey" value="qt_InterloperThirdTransmissionReceivedDesc"/>
+			<property class="Action0">
+				<!--start the last chapter-->
+				<property name="QuestGiven" value="quest_Interloper_Epilogue"/> 
+			</property>
+		</item>
+		
+		<!--End chapter InterceptSupplyCrate Note, given to the player on completion of InterceptSupplyCrate
+			This note generally updates the player on the story. Keep the special package and wait a bit to 
+			consider what to do with it.-->
+		<item name="interloperInterceptSupplyCrateComplete">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="interloperInterceptSupplyCrateCompleteDesc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="255,180,0"/>
+		</item>
+		
+		<!--magazine bundle for special supply drop loot
+			This bundle containes the magazines the player will trade-->
+		<item name="interloperSupplyCrateMagazineBundle">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="bookSouthernFarming"/>
+			<property name="CustomIconTint" value="250,180,0"/>
+			<property name="DescriptionKey" value="interloperSupplyCrateMagazineBundleDesc"/>
+			<property name="Stacknumber" value="20"/>
+			<property class="Action0">
+				<!--one reward book and 4 special magazines that are part of the storyline-->
+				<property name="Create_item" value="interloperSpecialMagOne,interloperSpecialMagTwo,interloperSpecialMagThree,interloperSpecialMagFour"/>
+				<property name="Create_item_count" value="1,1,1,1"/> 
+			</property>
+		</item>	
+		
+		
+		<!--special supply drop loot bundle - this is the main loot that is in the Special Supply Drop.
+			The player opens this bundle to get the story specific rewards. 
+			This bundle contains the interloperSupplyCrateMagazineBundle which is part of the storyline.
+			It also has specific weaponry and other stuff.
+			
+			The process goes:
+				Player finishes the Interloper:InterceptSupplyCrate chapter.
+				Player gets the interloperSupplyCrateDukesBundle from the Supply drop as well as some typical reward stuff
+					Opening interloperSupplyCrateDukesBundle will trigger a buff to be added that sets a countdown var.
+					This countdown will trigger the last chapter of the Interloper story when it runs down.
+				The interloperSupplyCrateDukesBundle contains interloperSupplyCrateMagazineBundle as well as other general rewards stuff.
+				The interloperSupplyCrateMagazineBundle can be opened by the player if opened, it can be re-bundled to use in the rest of the story.
+				-->
+				
+		<!--player gets this bundle in the supply drop of the interloper story chapter: Intercept The Supplies. 
+			The player gets this bundle from the supply crate (Intercept the supplies story) 
+			A bundle is used so that a buff can be started when opened - the buff tells the code that the interloper story is completed.-->
+		<item name="interloperSupplyCrateDukesBundle">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="cntFetchQuestSatchel"/>
+			<!--<property name="CustomIconTint" value="255,152,152"/>-->
+			<property name="DescriptionKey" value="interloperSupplyCrateDukesBundleDesc"/>
+			<property name="Stacknumber" value="20"/>
+			<property class="Action0">
+				<!--dukes stash-->
+				<property name="Create_item" value="interloperSupplyCrateMagazineBundle,interloperSpecialTissues,drinkCanMegaCrush"/>
+				<property name="Create_item_count" value="1,3,3"/> 
+			</property>
+			<!--add a buff to start the countdown of the final chapter of the interloper story -->
+			<effect_group tiered="false">		
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperStoryFinalCountdown"/>
+			</effect_group>
+		</item>	
+		<!--In addition to the Duke's bundle above, the player also get ammo in the supply crate.
+			THis is a bundle of the basic ammo. See loot.xml:interloperSecretDrop lootcontianer for full contents-->
+		<item name="interloperSupplyCrateAmmoBundle">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="bundleAmmo"/>
+			<!--<property name="CustomIconTint" value="255,152,152"/>-->
+			<property name="DescriptionKey" value="interloperSupplyCrateAmmoBundleDesc"/>
+			<property name="Stacknumber" value="20"/>
+			<property class="Action0">
+				<!--dukes stash-->
+				<property name="Create_item" value="ammoBundleShotgunSlug,ammoBundle9mmBulletAP,ammoBundle44MagnumBulletAP,ammoBundle762mmBulletAP,ammoRocketFrag,thrownGrenadeContact,thrownGrenade,thrownAmmoMolotovCocktail"/>
+				<property name="Create_item_count" value="6-10,6-10,5-9,6-10,20,6-25,6-25,6-25"/> 
+			</property>
+		</item>		
+		
+		<!--player gets this bundle in the Last drop of the interloper story. The player is trading 'special' magazines for 
+			Plissken Survival Technique books. The books are in the interloperSupplyCrateDukesBundle bundle. A bundle is 
+			used so that a buff can be started when opened - the buff tells the code that the interloper story is completed.-->
+		<item name="interloperEpilogueRewardBundle">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="cntBackpack01"/>
+			<!--<property name="CustomIconTint" value="255,152,152"/>-->
+			<property name="DescriptionKey" value="interloperEpilogueRewardBundleDesc"/>
+			<property name="Stacknumber" value="20"/>
+			<property class="Action0">
+				<!--drop the Plissken survival books-->
+				<property name="Create_item" value="interloperRewardBookOne,interloperRewardBookTwo,interloperRewardBookThree,interloperRewardBookFour"/>
+				<property name="Create_item_count" value="1,1,1,1"/>  
+			</property>
+			<!--add a buff to end the final chapter of the interloper story and shut down the storyline as its complete-->
+			<effect_group tiered="false">		
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperStoryFinished"/>
+				<!--trigger final reward for completing the Interloper story-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperStoryFinishedReward"/>
+			</effect_group>
+		</item>	
+		
+		<!--this bundle wraps the interloperSpywareSetupCompleteNote item above. 
+			This is what is given to the player once the transmitter/spyware is planted at a Trader.
+			The note is wrapped in a bundle so that an buff can be called on receipt (opening) and update the buff managing the Interloper story.
+			The buff needs to know this part of the story is complete as it will start the part of the story where
+			msgs are being received at the Receiver from the Trasmitter
+			NO LONGER USED-->
+		<item name="interloperMaliciousActorSpywareNoteBundle">
+			<property name="Extends" value="questRewardBundleMaster"/>
+			<property name="CreativeMode" value="Player"/>
+			<property name="CustomIcon" value="cntBookPile13"/>
+			<property name="CustomIconTint" value="239,200,162"/>
+			<property name="ItemTypeIcon" value="bundle"/>
+			<property name="DescriptionKey" value="interloperMaliciousActorSpywareNoteBundleDesc"/>
+			<property class="Action0">
+				<property name="Create_item" value="interloperSpywareSetupCompleteNote"/>
+				<property name="Create_item_count" value="1"/>
+			</property>
+		</item>
+		
+		<!-- Interloper:InterceptSupplyCrate 
+			The different 'special' magazines making up the Special Supply crate bundle-->
+		<!--special magazines, they are just story items and they dont do anything-->
+		<item name="interloperSpecialMagOne">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="bookSouthernFarming"/>
+			<property name="CustomIconTint" value="212,243,228"/>
+			<property name="DescriptionKey" value="interloperSpecialMagOneDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="interloperSpecialMagTwo">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="bookSouthernFarming"/>
+			<property name="CustomIconTint" value="212,243,228"/>
+			<property name="DescriptionKey" value="interloperSpecialMagTwoDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="interloperSpecialMagThree">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="bookSouthernFarming"/>
+			<property name="CustomIconTint" value="212,243,228"/>
+			<property name="DescriptionKey" value="interloperSpecialMagThreeDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="interloperSpecialMagFour">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="bookSouthernFarming"/>
+			<property name="CustomIconTint" value="212,243,228"/>
+			<property name="DescriptionKey" value="interloperSpecialMagFourDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--END special magazines, they are just story items and they dont do anything-->
+		<!--microphone for the SignalReceiver recipe. From the Sund of Silence chapter-->
+		<item name="interloperMicrophone">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mmetal"/>
+			<property name="CustomIcon" value="microphoneDesk"/>
+			<property name="DescriptionKey" value="interloperMicrophoneDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--generic item - box of tissues-->
+		<item name="interloperSpecialTissues">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Mpaper"/>
+			<property name="CustomIcon" value="tableCommunion"/> 
+			<property name="CustomIconTint" value="212,243,228"/>
+			<property name="DescriptionKey" value="interloperSpecialTissuesDesc"/>
+			<property name="Stacknumber" value="5"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		
+		<!--These are interloper reward story books, reading each book add a permanent buff that
+			changes the players stats in some way.-->
+		<!--see the descriptions in Localization.xml for and buffs:buffInterloperRewardBookXX for info on what each book does-->
+		<item name="interloperRewardBookOne">
+			<property name="Extends" value="schematicMaster"/>
+			<!--the book uses the same description as the buff that is received by reading the book-->
+			<property name="DescriptionKey" value="buffInterloperRewardBookOneDesc"/>
+			<property name="CustomIcon" value="cntBookPile05"/>
+			<property name="CustomIconTint" value="42C234"/>
+			<property name="Stacknumber" value="1"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperRewardBookOne"/>
+			</effect_group>
+		</item>
+		<item name="interloperRewardBookTwo">
+			<property name="Extends" value="schematicMaster"/>
+			<property name="DescriptionKey" value="buffInterloperRewardBookTwoDesc"/>
+			<property name="CustomIcon" value="cntBookPile07"/>
+			<property name="CustomIconTint" value="42C234"/>
+			<property name="Stacknumber" value="1"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperRewardBookTwo"/>
+			</effect_group>
+		</item>
+		<item name="interloperRewardBookThree">
+			<property name="Extends" value="schematicMaster"/>
+			<property name="DescriptionKey" value="buffInterloperRewardBookThreeDesc"/>
+			<property name="CustomIcon" value="cntBookPile11"/>
+			<property name="CustomIconTint" value="42C234"/>
+			<property name="Stacknumber" value="1"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperRewardBookThree"/>
+			</effect_group>
+		</item>
+		<item name="interloperRewardBookFour">
+			<property name="Extends" value="schematicMaster"/>
+			<property name="DescriptionKey" value="buffInterloperRewardBookFourDesc"/>
+			<property name="CustomIcon" value="cntBookPile14"/>
+			<property name="CustomIconTint" value="42C234"/>
+			<property name="Stacknumber" value="1"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperRewardBookFour"/>
+			</effect_group>
+		</item>
+		<item name="interloperRewardBookFive">
+			<property name="Extends" value="schematicMaster"/>
+			<property name="DescriptionKey" value="buffInterloperRewardBookFiveDesc"/>
+			<property name="CustomIcon" value="cntBookPile13"/>
+			<property name="CustomIconTint" value="42C234"/>
+			<property name="Stacknumber" value="1"/>
+			<effect_group tiered="false">
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperRewardBookFive"/>
+			</effect_group>
+		</item>
+		<!--This calls the quest that spawn the final Interloper Loot Crate.
+			TEST CODE-->
+		<item name="qt_spawnFinalInterloperLootDrop">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="schematicMaster"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="DescriptionKey" value="qt_spawnFinalInterloperLootDropDesc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="quest_InterloperSupplySpawn"/>
+			</property>
+		</item>
+		<!--END These are interloper reward story-->
+		
+		<!--Book to spawn the supply drop thats intercepted in the Interloper story
+		TEST CODE -->
+		<item name="interloperSupplyDropSpawn">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="cntBookPile08"/>
+			<!--<property name="CustomIconTint" value="255,152,152"/>-->
+			<property name="DescriptionKey" value="interloperSupplyDropSpawnDesc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="quest_InterloperSupplySpawn"/>
+			</property>
+		</item>
+
+		<!--END Interloper story items -->
+		
+		<!--START Pigeans Carry Diseases story items-->
+		<!--modArmorStoragePocket
+			questMaster resourcePaper waterHeaterWhite
+		-->
+		
+		<!--The last pigeon chapter-->
+		<item name="qt_PigeonFinal">
+			<property name="Extends" value="treasureQuestMaster"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,180,255"/>
+			<property name="DescriptionKey" value="homingPigeonNote4Desc"/>
+			<property class="Action0">
+				<property name="QuestGiven" value="quest_PigeonsEpilogue"/> 
+			</property>	
+		</item>        
+		
+		<item name="qt_PigeonFinalLootNote">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="qt_PigeonFinalLootNoteDesc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,180,255"/>
+		</item>
+		
+		<!--The message tube for the first pigeon (actually a bundle)-->
+		<item name="homingPigeonContainer1">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="pipeSmallWallCap"/>
+			<property name="CustomIconTint" value="240,163,37"/>
+			<property name="DescriptionKey" value="homingPigeonContainerDesc"/>
+			<property class="Action0">
+				<!--the first note is just an intro note, bringing the pigeons into the player's game, talks about the precious pigeons-->
+				<property name="Create_item" value="homingPigeonNote1"/>
+				<property name="Create_item_count" value="1"/>  
+			</property>
+			<effect_group tiered="false">
+				<!--notify the buffs.xml:buffFirstPigeonDelivery buff that the first note has been delviered to the players inventory-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_homingPigeonNote1Trigger"/>
+			</effect_group>
+		</item>	
+		
+		<!--The message tube for the second pigeon (actually a bundle)-->
+		<item name="homingPigeonContainer2">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="pipeSmallWallCap"/>
+			<property name="CustomIconTint" value="0,255,171"/>
+			<property name="DescriptionKey" value="homingPigeonContainerDesc"/>
+			<property class="Action0">
+				<!--the second note vents about someone killing the pigeons, mentions loot and rumours of a big thing -->
+				<property name="Create_item" value="homingPigeonNote2,resourceRawDiamond"/>
+				<property name="Create_item_count" value="1,2"/> 
+			</property>
+			<effect_group tiered="false">
+				<!--notify the buffs.xml:buffSecondPigeonDelivery buff that the second note has been delivered to the players inventory-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_homingPigeonNote2Trigger"/>
+			</effect_group>
+		</item>	
+		<!--The message tube for the third pigeon (actually a bundle)-->
+		<item name="homingPigeonContainer3">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="pipeSmallWallCap"/>
+			<property name="CustomIconTint" value="0,171,255"/>
+			<property name="DescriptionKey" value="homingPigeonContainerDesc"/>
+			<property class="Action0">
+				<!--The third note complains again about someone killing the pigeons, pigeons have a tracker now, 
+					big loot rumours confirmed and Interloper story started-->
+				<property name="Create_item" value="qt_InterloperStoryNote"/>
+				<property name="Create_item_count" value="1"/>  
+			</property>
+			<effect_group tiered="false">
+				<!--notify the buffs.xml:buffThirdPigeonDelivery buff that the third note has been delivered to the players inventory-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_homingPigeonNote3Trigger"/>
+				<!--start the interloper story background buff-->
+				<!--the buff managing the interloper story is added at this point in the story. 
+				The buff will manage (simulate) msgs being transmitted from the Transmitter to the Receiver 
+				at random (ish) periods once the player has compelted quest_Interloper_MaliciousActor quest above-->		
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffInterloperStory"/>
+			</effect_group>
+		</item>	
+		<!--The message tube for the fourth pigeon (actually a bundle)-->
+		<item name="homingPigeonContainer4">
+			<property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="pipeSmallWallCap"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="DescriptionKey" value="homingPigeonContainerDesc"/>
+			<property class="Action0">
+				<!--fourth note sets up the epilogue -->
+				<property name="Create_item" value="qt_PigeonFinal"/>
+				<property name="Create_item_count" value="1"/>  
+			</property>
+			<!--this will add a background buff to monitor the final epilogue. The player kills the Final 'pigeon' boss
+				and opens a reward bundle. Opening the bundle tells the buff buffPigeonOnFinalBoss below that the 
+				last chapter is completed succesfully. If the player doesnt the finish the chapter the 
+				the buffPigeonsCarryDiseasesStory buff will re-spawn the boss at random times (up to 5 times).-->
+			<effect_group tiered="false">
+				<!--notify the buffs.xml:buffFourthPigeonDelivery buff that the fourth note has been delivered to the players inventory-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_homingPigeonNote4Trigger"/>
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffPigeonOnFinalBoss"/>
+			</effect_group>	
+		</item>		
+		<!--the final pigeon boss loot bundle-->
+		<item name="pigeonFinalBossBundle">
+			 <property name="Extends" value="SNTBundleTemplate"/>
+			<property name="CustomIcon" value="bedroll"/>
+			<property name="CustomIconTint" value="210,210,33"/>
+			<property name="DescriptionKey" value="pigeonFinalBossBundleDesc"/>
+			<property class="Action0">
+				<property name="Create_item" value="qt_PigeonFinalLootNote,modShotgunBlockDamage,modM60DrumMagazine,drinkJarGrandpasWheelchairRacingElixir,drinkJarGrandpasThemsFightinWordsMoonshine,drinkJarGrandpasGunbeltOilSauce,drinkJarGrandpasForgettingElixir"/>
+				<property name="Create_item_count" value="1,1,1,3,3,3,1"/>  
+			</property>
+			<effect_group tiered="false">
+				<!--notify the buffs.xml:buffPigeonOnFinalBoss buff that the final boss loot has been delivered to the players inventory.
+				This ends the Pigeons Carry Diseases Story-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buff_homingPigeonBossFinalTrigger"/> 
+				<!--call the reward event as the story is finished-->
+				<triggered_effect trigger="onSelfPrimaryActionEnd" action="AddBuff" buff="buffPigeonsStoryFinishedReward"/> 
+			</effect_group>	
+		</item>		
+		
+		<!--generic items for pigeon lootbags (Pigeons Carry Diseases storyline)-->
+		<item name="resourcePigeonPoop">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="emberPileDeco6"/>
+			<property name="CustomIconTint" value="242,242,242"/>
+			<property name="DescriptionKey" value="resourcePigeonPoop"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourcePigeonLice">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="glassDebris01"/><!--glassDebris01-->
+			<property name="CustomIconTint" value="242,242,242"/>
+			<property name="DescriptionKey" value="resourcePigeonLice"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourcePigeonMush">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="goreHumanSkull"/>
+			<property name="CustomIconTint" value="196,72,72"/>
+			<property name="DescriptionKey" value="resourcePigeonMush"/>
+			<property name="Stacknumber" value="10"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourcePigeonTracker">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="waterHeaterWhite"/>
+			<property name="CustomIconTint" value="9,99,3"/>
+			<property name="DescriptionKey" value="resourcePigeonTrackerDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>  
+		<item name="resourcePigeonBossMarker">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="poiPartHelper"/>
+			<property name="CustomIconTint" value="151,58,71"/>
+			<property name="DescriptionKey" value="resourcePigeonBossMarkerDesc"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>  
+		<!--each pigeon has its own ID Band-->
+		<item name="resourcePigeonBand1">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="pipeSmallWallOutsideCorner"/>
+			<property name="CustomIconTint" value="240,163,37"/>
+			<property name="DescriptionKey" value="resourcePigeonBandDesc1"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourcePigeonBand2">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="pipeSmallWallOutsideCorner"/>
+			<property name="CustomIconTint" value="0,255,171"/>
+			<property name="DescriptionKey" value="resourcePigeonBandDesc2"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourcePigeonBand3">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="pipeSmallWallOutsideCorner"/>
+			<property name="CustomIconTint" value="0,171,255"/>
+			<property name="DescriptionKey" value="resourcePigeonBandDesc3"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<item name="resourcePigeonBand4">
+			<property name="HoldType" value="45"/>
+			<property name="Meshfile" value="@:Other/Items/Misc/sackPrefab.prefab"/>
+			<property name="DropMeshfile" value="@:Other/Items/Misc/sack_droppedPrefab.prefab"/>
+			<property name="Material" value="Morganic"/>
+			<property name="CustomIcon" value="pipeSmallWallOutsideCorner"/>
+			<property name="CustomIconTint" value="255,152,152"/>
+			<property name="DescriptionKey" value="resourcePigeonBandDesc4"/>
+			<property name="Stacknumber" value="1"/> 
+			<property name="EconomicValue" value="0"/>
+			<property name="Group" value="Resources"/>
+		</item>
+		<!--Notes that the pigeons drop-->
+		<item name="homingPigeonNote1">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="homingPigeonNote1Desc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,180,255"/>
+		</item>
+		<item name="homingPigeonNote2">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="homingPigeonNote2Desc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,180,255"/>
+		</item>
+		<!--homingPigeonNote3 is actually qt_InterloperStoryNote (defined above) because it starts a quest.
+			So is ignored here-->
+		<item name="homingPigeonNote4">
+			<property name="Extends" value="blankNoteMaster"/>
+			<property name="DescriptionKey" value="homingPigeonNote4Desc"/>
+			<property name="CustomIcon" value="resourcePaper"/>
+			<property name="CustomIconTint" value="0,180,255"/>
+		</item>
+		<!-- END generic items for pigeon lootbags (Interloper storyline) goreHumanSkull rubblePileBricks(tick) utilityInsulator(ID band CFF 32 45 27 13822771)  rubblePileBricksLong(slug) groundDecalTornPaper groundDecalBurntPaper decals3 emberPileDeco8 garbage_decor3 glassBrokenCapRight glassDebris01-->
+		
+		<!--END Pigeans Carry Diseases story items-->
+		
+	</append>
+	
+</configs>

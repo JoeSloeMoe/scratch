@@ -1,0 +1,121 @@
+<config>
+
+	<append xpath="/recipes">
+		<!--Mary's revenge storyline recipes-->
+		<!--playerExplosiveBarrels - mary's revenge story-->
+		<recipe name="playerExplosiveBarrel" count="1" craft_time="30" craft_area="workbench" tags="workbenchCrafting,learnable">
+			<ingredient name="resourceForgedIron" count="4"/>
+			<ingredient name="thrownTimedCharge" count="1"/>
+			<ingredient name="ammoGasCan" count="100"/>
+			<ingredient name="resourceNail" count="50"/> 
+			<ingredient name="resourceRockSmall" count="50"/>
+		</recipe>
+		
+		<!--A summoning pie made from the bones and hair of Judy, Magrats sister.
+			Used to summon Magrat on placement - mary's revenge story.
+			The player gets the major ingredients (bones & hair) for this recipe from Margrat's sister's (Judy's) grave.-->
+		<recipe name="foodPumpkinJudyPieWhole" count="1" craft_area="chemistryStation" craft_time="720" >
+			<ingredient name="resourceWitchesHair" count="1"/>
+			<ingredient name="resourceCultBoneJudy" count="1"/>
+			<ingredient name="terrDirt" count="1"/>
+			<ingredient name="medicalBloodBag" count="1"/>
+			<ingredient name="foodCropPumpkin" count="2"/>
+		</recipe>
+		<!--END Mary's revenge storyline recipes-->
+		<!--interloper story-->
+		
+		<!--when the interloper story starts the player can then create the Story note again with a recipe, so they can repeat the story if they fail-->
+		<!--<recipe name="qt_InterloperStoryNote" count="1" craft_time="12" tags="learnable">
+			<ingredient name="resourceRockSmall" count="50"/>
+		</recipe>-->
+		<!--see blocks.xml:interloperReceiverBlock for info-->
+		<recipe name="interloperReceiverBlock" count="1" craft_time="30" craft_area="workbench">
+			<ingredient name="resourceForgedIron" count="6"/>
+			<ingredient name="resourceElectricParts" count="18"/>
+			<ingredient name="resourceScrapPolymers" count="16"/>
+			<ingredient name="speaker" count="1"/>
+			<ingredient name="carBattery" count="1"/>
+			
+		</recipe>
+		<!--items.xml:interloperMicrophone- used in the Interloper:Sound of Silence chapter.
+		Ingredient for the interloperTransmitterBlock recipe below -->
+		<recipe name="interloperMicrophone" count="1" craft_time="10" craft_area="workbench">
+			<ingredient name="resourceForgedIron" count="5"/>
+			<ingredient name="resourceElectricParts" count="6"/>
+			<ingredient name="resourceScrapPolymers" count="2"/>	
+		</recipe>
+		<!--see blocks.xml:interloperTransmitterBlock for info-->
+		<recipe name="interloperTransmitterBlock" count="1" craft_time="30" craft_area="workbench">
+			<ingredient name="resourceForgedIron" count="12"/>
+			<ingredient name="resourceElectricParts" count="18"/>
+			<ingredient name="resourceScrapPolymers" count="8"/>
+			<ingredient name="interloperMicrophone" count="1"/>
+			<ingredient name="carBattery" count="1"/>
+		</recipe>
+		
+		<!--the special magazine delivery from Interloper:InterceptSupplyCrate - if the player opens the bundle
+			they can recreate the bundle using this recipe.
+			Used in the interloperTradeDropBag recipe below. -->
+		<recipe name="interloperSupplyCrateMagazineBundle" count="1" craft_time="10">
+			<ingredient name="interloperSpecialMagOne" count="1"/>
+			<ingredient name="interloperSpecialMagTwo" count="1"/>
+			<ingredient name="interloperSpecialMagThree" count="1"/>
+			<ingredient name="interloperSpecialMagFour" count="1"/>
+		</recipe>	
+	
+		<!--Magazine drop bag - this bag is created when the player is trading the magazines found in the Special Supply Crate 
+			for Plissken's Survival Techniques books-->
+		<recipe name="interloperTradeDropBag" count="1" craft_time="15">
+			<ingredient name="interloperSupplyCrateMagazineBundle" count="1"/>
+			<ingredient name="resourceCloth" count="25"/>
+			<ingredient name="resourceLeather" count="2"/>
+		</recipe>	
+		
+		<!--END interloper story recipes-->
+		
+
+		
+		<!-- increases speed, stamina and health for a standard in-game day (60min) -->
+		<!--<recipe name="drinkJarGrandpasWheelchairRacingElixir" count="1" craft_time="360" craft_area="campfire"  craft_tool="toolCookingPot">
+			<ingredient name="drinkJarGrandpasLearningElixir" count="1"/>
+			<ingredient name="resourcePotassiumNitratePowder" count="50"/>
+			<ingredient name="medicalAloeCream" count="5"/>
+			<ingredient name="drinkJarYuccaJuice" count="1"/>
+			<ingredient name="resourceSilverNugget" count="2"/>
+		</recipe>-->
+
+		<!-- melee buffs for a standard in-game day (60min) -->
+		<!--<recipe name="drinkJarGrandpasThemsFightinWordsMoonshine" craft_time="360" count="1" craft_area="campfire"  craft_tool="toolCookingPot">
+			<ingredient name="drinkJarGrandpasMoonshine" count="1"/>
+			<ingredient name="resourceGunPowder" count="45"/>
+			<ingredient name="resourceGlue" count="5"/>
+			<ingredient name="drinkJarBeer" count="1"/>
+			<ingredient name="resourceGoldNugget" count="2"/>
+		</recipe>-->
+
+		<!-- 	ranged buffs for a standard in-game day (60min) -->
+		<!--<recipe name="drinkJarGrandpasGunbeltOilSauce" count="1" craft_time="360" craft_area="campfire"  craft_tool="toolCookingPot">
+			<ingredient name="drinkJarGrandpasAwesomeSauce" count="1"/>
+			<ingredient name="resourceScrapLead" count="42"/>
+			<ingredient name="resourceOil" count="5"/>
+			<ingredient name="drinkJarCoffee" count="1"/>
+			<ingredient name="resourceRawDiamond" count="2"/>
+		</recipe>-->
+				
+		<!--these 3 mods are unlocked by modRagdollSpecialSchematic, modElectricSpecialSchematic,
+		modCrowdControlSchematic: only modCrowdControl is being used currently-->
+		<!--<recipe name="modRagdollSpecial" count="1" craft_area="workbench" tags="learnable,workbenchCrafting">
+			<ingredient name="resourceForgedIron" count="1"/>
+		</recipe>
+		<recipe name="modElectricSpecial" count="1" craft_area="workbench" tags="learnable,workbenchCrafting">
+			<ingredient name="resourceForgedIron" count="1"/>
+		</recipe>-->
+		<recipe name="modCrowdControl" count="1" craft_time="30" craft_area="workbench" tags="learnable,workbenchCrafting">
+			<ingredient name="hafniumHydrideMagnet" count="1"/>
+			<ingredient name="advancedClothingMesh" count="1"/>
+			<ingredient name="chargedNiCdBattery" count="1"/>
+			<ingredient name="modGunMeleeRadRemover" count="1"/>
+			<ingredient name="modMeleeStunBatonRepulsor" count="1"/>
+		</recipe>		
+	</append>
+</config>
